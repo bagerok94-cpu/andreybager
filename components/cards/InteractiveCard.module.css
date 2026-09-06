@@ -1,0 +1,370 @@
+/* ==========================================================================
+   UNIVERSAL INTERACTIVE CARD — ANDREY BAGER
+   Style: Dark Digital Dashboard / Restrained Glassmorphism
+   States: closed | opening | open | closing
+   ========================================================================== */
+
+.card {
+  position: relative;
+  width: 100%;
+  background-color: var(--surface-glass);
+  backdrop-filter: blur(var(--blur-glass));
+  -webkit-backdrop-filter: blur(var(--blur-glass));
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-glass);
+  transition:
+    border-color var(--transition-base),
+    background-color var(--transition-base),
+    box-shadow var(--transition-base),
+    transform var(--transition-base);
+  overflow: hidden;
+}
+
+.card:hover {
+  border-color: var(--border-light);
+  background-color: var(--surface-glass-elevated);
+}
+
+.card.open,
+.card.opening {
+  border-color: var(--border-highlight);
+  background-color: var(--surface-glass-elevated);
+  box-shadow: var(--shadow-elevated);
+}
+
+/* --- Card Header / Trigger Area --- */
+.trigger {
+  width: 100%;
+  background: none;
+  border: none;
+  text-align: left;
+  padding: var(--space-6);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  color: inherit;
+  font-family: inherit;
+  outline: none;
+}
+
+.trigger:focus-visible {
+  outline: 2px solid var(--accent-secondary);
+  outline-offset: -2px;
+}
+
+.headerRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding-right: var(--space-6);
+}
+
+.titleArea {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.visualWrapper {
+  position: relative;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-md);
+  background-color: var(--surface-hover);
+  border: 1px solid var(--border-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.iconContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  transition: transform var(--transition-fast);
+}
+
+/* ==========================================================================
+   MICRO-ANIMATIONS
+   ========================================================================== */
+
+/* 1. Ring Pulse (About Card) */
+.ringEffect {
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.playRing .ringEffect {
+  animation: lightRingPulse 0.75s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes lightRingPulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.6;
+    box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.25);
+  }
+  70% {
+    opacity: 0.2;
+    box-shadow: 0 0 0 8px rgba(255, 255, 255, 0.05);
+  }
+  100% {
+    transform: scale(1.35);
+    opacity: 0;
+    box-shadow: 0 0 0 14px rgba(255, 255, 255, 0);
+  }
+}
+
+/* 2. Code Pixels Converge (Portfolio Card) */
+.playCodePixels .iconContainer {
+  animation: codePixelsConverge 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes codePixelsConverge {
+  0% {
+    transform: scale(0.85);
+    opacity: 0.5;
+    letter-spacing: 2px;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* 3. Paper Plane Arc Glide (Contact Card) */
+.playPaperPlane .iconContainer {
+  animation: paperPlaneTrajectory 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes paperPlaneTrajectory {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  35% {
+    transform: translate(4px, -5px) rotate(-12deg);
+  }
+  70% {
+    transform: translate(2px, -2px) rotate(-4deg);
+  }
+  100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+}
+
+/* 4. Geometric Assemble (Tools Card) */
+.playGeometricAssemble .iconContainer {
+  animation: geometricAssemble 0.75s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes geometricAssemble {
+  0% {
+    transform: rotate(-25deg) scale(0.85);
+    opacity: 0.6;
+  }
+  60% {
+    transform: rotate(6deg) scale(1.05);
+    opacity: 1;
+  }
+  100% {
+    transform: rotate(0deg) scale(1);
+    opacity: 1;
+  }
+}
+
+/* 5. Layers Fold (Services Card) */
+.playLayersFold .iconContainer {
+  animation: layersFold 0.75s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes layersFold {
+  0% {
+    transform: translateY(3px) scaleY(0.8);
+    opacity: 0.6;
+  }
+  50% {
+    transform: translateY(-2px) scaleY(1.05);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(0) scaleY(1);
+    opacity: 1;
+  }
+}
+
+/* 6. Rocket Launch & Return (Project Card) */
+.playRocketLaunch .iconContainer {
+  animation: rocketLaunchGlide 0.85s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes rocketLaunchGlide {
+  0% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-6px);
+  }
+  70% {
+    transform: translateY(-2px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+/* 7. Sound Waves Dance & Settle (Music Card) */
+.playSoundWaves .iconContainer {
+  animation: soundWavesSettle 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes soundWavesSettle {
+  0% {
+    transform: scaleY(0.75);
+  }
+  30% {
+    transform: scaleY(1.2);
+  }
+  60% {
+    transform: scaleY(0.9);
+  }
+  100% {
+    transform: scaleY(1);
+  }
+}
+
+/* --- Typography & Base Card UI --- */
+.title {
+  font-size: 1.125rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--text-primary);
+}
+
+.expandIcon {
+  font-size: 1.125rem;
+  color: var(--text-muted);
+  transition: transform var(--transition-fast), color var(--transition-fast);
+}
+
+.trigger:hover .expandIcon {
+  color: var(--text-primary);
+  transform: translate(2px, -2px);
+}
+
+/* --- Preview (Closed Content) --- */
+.previewContent {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  transition: opacity var(--transition-base), transform var(--transition-base);
+}
+
+.card.open .previewContent,
+.card.opening .previewContent {
+  display: none;
+}
+
+/* --- Expanded (Open Content Container) --- */
+.expandedContainer {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 350ms cubic-bezier(0.16, 1, 0.3, 1), opacity 350ms cubic-bezier(0.16, 1, 0.3, 1);
+  opacity: 0;
+}
+
+.card.opening .expandedContainer,
+.card.open .expandedContainer {
+  grid-template-rows: 1fr;
+  opacity: 1;
+}
+
+.card.closing .expandedContainer {
+  grid-template-rows: 0fr;
+  opacity: 0;
+}
+
+.expandedInner {
+  overflow: hidden;
+  padding: 0 var(--space-6) var(--space-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  border-top: 1px solid var(--border-subtle);
+  margin-top: var(--space-2);
+  padding-top: var(--space-5);
+}
+
+/* Close button inside open state */
+.closeButton {
+  position: absolute;
+  top: var(--space-5);
+  right: var(--space-5);
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-full);
+  background-color: var(--surface-hover);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+  transition:
+    background-color var(--transition-fast),
+    border-color var(--transition-fast),
+    color var(--transition-fast);
+}
+
+.closeButton:hover {
+  background-color: var(--surface-active);
+  border-color: var(--border-light);
+  color: var(--text-primary);
+}
+
+.closeButton:focus-visible {
+  outline: 2px solid var(--accent-secondary);
+  outline-offset: 2px;
+}
+
+/* ==========================================================================
+   ACCESSIBILITY: PREFERS-REDUCED-MOTION
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .card,
+  .expandedContainer,
+  .previewContent,
+  .expandIcon,
+  .closeButton,
+  .iconContainer {
+    transition: none !important;
+    animation: none !important;
+  }
+
+  .playRing .ringEffect,
+  .playCodePixels .iconContainer,
+  .playPaperPlane .iconContainer,
+  .playGeometricAssemble .iconContainer,
+  .playLayersFold .iconContainer,
+  .playRocketLaunch .iconContainer,
+  .playSoundWaves .iconContainer {
+    animation: none !important;
+  }
+}

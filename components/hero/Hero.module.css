@@ -1,0 +1,292 @@
+/* ==========================================================================
+   HERO COMPOSITION — ANDREY BAGER
+   Style: Dark Digital Dashboard / Monochromatic Glassmorphism
+   ========================================================================== */
+
+.hero {
+  position: relative;
+  width: 100%;
+  min-height: calc(100vh - 72px - 96px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  overflow: hidden;
+  padding: var(--space-8) 0;
+}
+
+/* Background Atmosphere (Subtle radial depths, no color casts) */
+.background {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    radial-gradient(circle at 18% 25%, rgba(255, 255, 255, 0.035) 0%, transparent 45%),
+    radial-gradient(circle at 82% 70%, rgba(255, 255, 255, 0.02) 0%, transparent 50%),
+    radial-gradient(circle at 50% 50%, rgba(18, 21, 28, 0.5) 0%, transparent 70%);
+}
+
+.content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+  width: 100%;
+}
+
+/* --- Centerpiece Composition (Name + Glass Stripe + Particles) --- */
+.centerpiece {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+  padding: var(--space-6) 0;
+}
+
+/* Glass Stripe passing horizontally across the name */
+.glassStripe {
+  position: absolute;
+  top: 50%;
+  left: -5vw;
+  right: -5vw;
+  height: clamp(48px, 8vw, 76px);
+  transform: translateY(-50%);
+  background: rgba(14, 17, 23, 0.6);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-top: 1px solid var(--border-light);
+  border-bottom: 1px solid var(--border-light);
+  box-shadow: 0 4px 28px rgba(0, 0, 0, 0.45);
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* Subtle gradient sheen inside stripe without color */
+.glassStripe::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.03) 50%,
+    transparent 100%
+  );
+}
+
+/* Primary Name Typography */
+.name {
+  position: relative;
+  z-index: 1;
+  font-family: var(--font-montserrat), sans-serif;
+  font-size: clamp(2.85rem, 12vw, 8.75rem);
+  font-weight: 800;
+  line-height: 0.88;
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+  color: var(--text-primary);
+  user-select: none;
+  margin: 0;
+  word-break: break-word;
+}
+
+.nameLine {
+  display: block;
+}
+
+/* --- Digital Pixel Particles (Positioned around the glass stripe) --- */
+.particlesLayer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 3;
+}
+
+.particle {
+  position: absolute;
+  background-color: var(--text-primary);
+  animation: particleFloat 7s ease-in-out infinite alternate;
+}
+
+/* Particle variations */
+.pSmallSharp {
+  width: 5px;
+  height: 5px;
+  opacity: 0.8;
+  filter: blur(0);
+}
+
+.pMedium {
+  width: 8px;
+  height: 8px;
+  opacity: 0.45;
+  filter: blur(0.5px);
+}
+
+.pLargeSoft {
+  width: 14px;
+  height: 14px;
+  opacity: 0.22;
+  filter: blur(1.5px);
+}
+
+.pExtraLarge {
+  width: 18px;
+  height: 18px;
+  opacity: 0.12;
+  filter: blur(2px);
+}
+
+/* Specific positions around top and bottom borders of stripe */
+.p1 { top: calc(50% - clamp(36px, 6vw, 56px)); left: 12%; animation-delay: 0s; }
+.p2 { top: calc(50% - clamp(28px, 4.5vw, 44px)); left: 24%; animation-delay: 1.2s; }
+.p3 { top: calc(50% - clamp(44px, 7vw, 64px)); left: 42%; animation-delay: 2.5s; }
+.p4 { top: calc(50% - clamp(26px, 4vw, 40px)); left: 68%; animation-delay: 0.8s; }
+.p5 { top: calc(50% - clamp(38px, 6vw, 54px)); left: 84%; animation-delay: 1.9s; }
+.p6 { top: calc(50% - clamp(50px, 8vw, 72px)); left: 91%; animation-delay: 3.1s; }
+
+.p7 { top: calc(50% + clamp(26px, 4vw, 40px)); left: 8%; animation-delay: 0.5s; }
+.p8 { top: calc(50% + clamp(38px, 6vw, 54px)); left: 19%; animation-delay: 1.7s; }
+.p9 { top: calc(50% + clamp(28px, 4.5vw, 44px)); left: 35%; animation-delay: 2.8s; }
+.p10 { top: calc(50% + clamp(46px, 7vw, 66px)); left: 58%; animation-delay: 1.1s; }
+.p11 { top: calc(50% + clamp(32px, 5vw, 48px)); left: 76%; animation-delay: 2.2s; }
+.p12 { top: calc(50% + clamp(42px, 6.5vw, 60px)); left: 88%; animation-delay: 0.3s; }
+
+@keyframes particleFloat {
+  0% {
+    transform: translateY(0) scale(1);
+  }
+  100% {
+    transform: translateY(-4px) scale(0.95);
+  }
+}
+
+/* --- Dashboard Meta Bar (Avatar + Tagline) --- */
+.metaBar {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-6);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--border-subtle);
+}
+
+/* Tagline */
+.tagline {
+  font-size: clamp(1.125rem, 2.2vw, 1.5rem);
+  font-weight: 500;
+  line-height: 1.4;
+  color: var(--text-secondary);
+  max-width: 540px;
+}
+
+.taglineAccent {
+  color: var(--text-primary);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+/* Avatar Frame / Placeholder */
+.avatarContainer {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.avatarFrame {
+  position: relative;
+  width: clamp(84px, 12vw, 116px);
+  height: clamp(84px, 12vw, 116px);
+  border-radius: var(--radius-lg);
+  background-color: var(--surface-glass);
+  backdrop-filter: blur(var(--blur-subtle));
+  -webkit-backdrop-filter: blur(var(--blur-subtle));
+  border: 1px solid var(--border-light);
+  box-shadow: var(--shadow-glass);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  transition: border-color var(--transition-fast);
+}
+
+.avatarPlaceholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-1);
+  color: var(--text-muted);
+}
+
+.avatarMonogram {
+  font-family: var(--font-montserrat), sans-serif;
+  font-size: clamp(1.25rem, 2vw, 1.75rem);
+  font-weight: 800;
+  color: var(--text-primary);
+  letter-spacing: 0.05em;
+}
+
+.avatarMeta {
+  display: flex;
+  flex-direction: column;
+}
+
+.avatarStatus {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.avatarRole {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+/* ==========================================================================
+   RESPONSIVE LAYOUT
+   ========================================================================== */
+
+@media (max-width: 767px) {
+  .hero {
+    min-height: auto;
+    padding: var(--space-4) 0 var(--space-8);
+  }
+
+  .content {
+    gap: var(--space-6);
+  }
+
+  .metaBar {
+    flex-direction: column-reverse;
+    align-items: flex-start;
+    gap: var(--space-4);
+  }
+
+  .tagline {
+    font-size: 1.125rem;
+  }
+
+  .avatarFrame {
+    width: 72px;
+    height: 72px;
+  }
+}
+
+/* ==========================================================================
+   ACCESSIBILITY: PREFERS-REDUCED-MOTION
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .particle {
+    animation: none !important;
+  }
+}
