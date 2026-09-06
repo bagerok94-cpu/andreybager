@@ -67,6 +67,7 @@
   --container-padding-desktop: 32px;
   --container-padding-tablet: 24px;
   --container-padding-mobile: 16px;
+  --mobile-nav-offset: calc(112px + env(safe-area-inset-bottom, 0px));
 
   /* --- Shadows (Restrained & Cinematic) --- */
   --shadow-subtle: 0 2px 8px rgba(0, 0, 0, 0.35);
@@ -102,6 +103,8 @@ html {
   font-size: 16px;
   scroll-behavior: smooth;
   -webkit-text-size-adjust: 100%;
+  overflow-x: hidden;
+  scroll-padding-bottom: var(--mobile-nav-offset);
 }
 
 body {
@@ -113,6 +116,7 @@ body {
   font-weight: 400;
   line-height: 1.6;
   min-height: 100vh;
+  overflow-x: hidden;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

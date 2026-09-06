@@ -133,3 +133,15 @@
   stroke-linecap: round;
   stroke-linejoin: round;
 }
+
+@media (max-width: 767px) {
+  .openFooter {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .ctaLink {
+    width: 100%;
+    justify-content: center;
+  }
+}
