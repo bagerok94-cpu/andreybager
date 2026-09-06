@@ -7,6 +7,7 @@
 .card {
   position: relative;
   width: 100%;
+  min-width: 0;
   background-color: var(--surface-glass);
   backdrop-filter: blur(var(--blur-glass));
   -webkit-backdrop-filter: blur(var(--blur-glass));
@@ -51,7 +52,7 @@
 
 .trigger:focus-visible {
   outline: 2px solid var(--accent-secondary);
-  outline-offset: -2px;
+  outline-offset: -4px;
 }
 
 .headerRow {
@@ -59,6 +60,8 @@
   align-items: center;
   justify-content: space-between;
   width: 100%;
+  min-width: 0;
+  gap: var(--space-3);
   padding-right: var(--space-6);
 }
 
@@ -66,6 +69,8 @@
   display: flex;
   align-items: center;
   gap: var(--space-3);
+  min-width: 0;
+  flex: 1;
 }
 
 .visualWrapper {
@@ -253,11 +258,14 @@
   letter-spacing: 0.05em;
   text-transform: uppercase;
   color: var(--text-primary);
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 
 .expandIcon {
   font-size: 1.125rem;
   color: var(--text-muted);
+  flex-shrink: 0;
   transition: transform var(--transition-fast), color var(--transition-fast);
 }
 
@@ -366,5 +374,24 @@
   .playRocketLaunch .iconContainer,
   .playSoundWaves .iconContainer {
     animation: none !important;
+  }
+}
+
+@media (max-width: 767px) {
+  .trigger {
+    padding: var(--space-5);
+  }
+
+  .headerRow {
+    padding-right: var(--space-8);
+  }
+
+  .title {
+    font-size: 1rem;
+    letter-spacing: 0.04em;
+  }
+
+  .expandedInner {
+    padding: 0 var(--space-5) var(--space-5);
   }
 }
