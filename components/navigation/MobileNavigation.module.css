@@ -26,7 +26,7 @@
   border: 1px solid var(--border-light);
   border-radius: var(--radius-xl);
   box-shadow: var(--shadow-glass);
-  padding: var(--space-2) var(--space-3);
+  padding: var(--space-2) var(--space-2);
 }
 
 .list {
@@ -36,6 +36,7 @@
   list-style: none;
   margin: 0;
   padding: 0;
+  gap: 0;
 }
 
 .link {
@@ -43,10 +44,11 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: var(--space-2) var(--space-2);
-  font-size: 0.75rem;
+  padding: var(--space-2) var(--space-1);
+  font-size: 0.6875rem;
   font-weight: 500;
-  letter-spacing: 0.02em;
+  letter-spacing: 0;
+  white-space: nowrap;
   color: var(--text-secondary);
   border-radius: var(--radius-sm);
   transition: color var(--transition-fast), background-color var(--transition-fast);

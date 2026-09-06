@@ -5,6 +5,7 @@
 
 .section {
   width: 100%;
+  min-width: 0;
   padding-top: var(--space-8);
   padding-bottom: var(--space-12);
 }
@@ -14,36 +15,44 @@
   grid-template-columns: repeat(12, 1fr);
   gap: var(--space-6);
   width: 100%;
+  min-width: 0;
   align-items: start;
 }
 
 /* Specific dashboard grid spans */
 .aboutSpan {
   grid-column: span 7;
+  min-width: 0;
 }
 
 .portfolioSpan {
   grid-column: span 5;
+  min-width: 0;
 }
 
 .servicesSpan {
   grid-column: span 7;
+  min-width: 0;
 }
 
 .toolsSpan {
   grid-column: span 5;
+  min-width: 0;
 }
 
 .projectSpan {
   grid-column: span 6;
+  min-width: 0;
 }
 
 .contactSpan {
   grid-column: span 6;
+  min-width: 0;
 }
 
 .musicSpan {
   grid-column: span 12;
+  min-width: 0;
 }
 
 /* Tablet Layout (2-column balanced) */
@@ -71,7 +80,7 @@
 @media (max-width: 767px) {
   .section {
     padding-top: var(--space-6);
-    padding-bottom: var(--space-8);
+    padding-bottom: var(--space-12);
   }
 
   .grid {
