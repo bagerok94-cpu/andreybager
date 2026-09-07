@@ -1,24 +1,32 @@
 import { Header } from './Header';
 import { MobileNavigation } from '@/components/navigation';
+import { contentLayer } from '@/lib/content';
 import styles from './AppShell.module.css';
 
 interface AppShellProps {
   children: React.ReactNode;
 }
 
-export function AppShell({ children }: AppShellProps) {
+export async function AppShell({ children }: AppShellProps) {
+  const [navItems, settings, about] = await Promise.all([
+    contentLayer.getNavigation(),
+    contentLayer.getSiteSettings(),
+    contentLayer.getAbout(),
+  ]);
+
   return (
     <div className={styles.shell}>
-      {/* Header with integrated Desktop Navigation */}
-      <Header />
+      <Header
+        navItems={navItems}
+        brandTitle={settings.author}
+        brandSubtitle={about.role}
+      />
 
-      {/* Main Content Area */}
       <main id="main-content" className={`${styles.main} container`}>
         {children}
       </main>
 
-      {/* Mobile Floating Glass Navigation */}
-      <MobileNavigation />
+      <MobileNavigation items={navItems} />
     </div>
   );
 }

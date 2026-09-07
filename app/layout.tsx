@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Montserrat } from 'next/font/google';
 import { AppShell } from '@/components/layout';
+import { contentLayer } from '@/lib/content';
 import './globals.css';
 
 const montserrat = Montserrat({
@@ -10,10 +11,14 @@ const montserrat = Montserrat({
   display: 'swap',
 });
 
-export const metadata: Metadata = {
-  title: 'ANDREY BAGER — WEB DESIGNER / AI / AUTOMATION',
-  description: 'Digital solutions, web design, AI and automation.',
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const settings = await contentLayer.getSiteSettings();
+
+  return {
+    title: settings.title,
+    description: settings.description,
+  };
+}
 
 export default function RootLayout({
   children,

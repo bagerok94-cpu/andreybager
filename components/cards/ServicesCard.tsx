@@ -1,18 +1,15 @@
 'use client';
 
 import Link from 'next/link';
+import type { ServicesContent } from '@/types';
 import { InteractiveCard } from './InteractiveCard';
 import styles from './CardsCommon.module.css';
 
-const SERVICES_LIST = [
-  { num: '01', title: 'ВЕБ-ДИЗАЙН И САЙТЫ', desc: 'Современные сайты и продающие страницы.' },
-  { num: '02', title: 'TILDA РАЗРАБОТКА', desc: 'Верстка, Zero Block, адаптация и запуск.' },
-  { num: '03', title: 'UI / UX ДИЗАЙН', desc: 'Проектирование удобных цифровых интерфейсов.' },
-  { num: '04', title: 'AI И АВТОМАТИЗАЦИЯ', desc: 'AI-инструменты и автоматизация рутинных процессов.' },
-  { num: '05', title: 'TELEGRAM-БОТЫ', desc: 'Разработка ботов и интеграций для бизнеса.' },
-];
+interface ServicesCardProps {
+  content: ServicesContent;
+}
 
-export function ServicesCard() {
+export function ServicesCard({ content }: ServicesCardProps) {
   const icon = (
     <svg className={styles.iconSvg} viewBox="0 0 24 24" aria-hidden="true">
       <polygon points="12 2 2 7 12 12 22 7 12 2" />
@@ -24,39 +21,39 @@ export function ServicesCard() {
   const preview = (
     <>
       <p className={styles.previewDesc}>
-        Дизайн, сайты, AI
+        {content.previewDescLines[0]}
         <br />
-        и автоматизация бизнеса.
+        {content.previewDescLines[1]}
       </p>
-      <span className={styles.badge}>Услуги под ключ</span>
+      <span className={styles.badge}>{content.previewBadge}</span>
     </>
   );
 
   return (
     <InteractiveCard
       id="services"
-      title="ЧТО Я ДЕЛАЮ"
+      title={content.title}
       icon={icon}
       animationType="layers-fold"
       preview={preview}
     >
       <div className={styles.itemsList}>
-        {SERVICES_LIST.map((svc) => (
-          <div key={svc.num} className={styles.itemRow}>
-            <span className={styles.itemTitle}>{`${svc.num} — ${svc.title}`}</span>
-            <p className={styles.itemDesc}>{svc.desc}</p>
+        {content.items.map((svc) => (
+          <div key={svc.id} className={styles.itemRow}>
+            <span className={styles.itemTitle}>{`${svc.number} — ${svc.title}`}</span>
+            <p className={styles.itemDesc}>{svc.description}</p>
           </div>
         ))}
       </div>
 
       <div className={styles.openFooter}>
-        <span className={styles.badge}>5 направлений работы</span>
+        <span className={styles.badge}>{content.footerBadge}</span>
         <Link
-          href="/services"
+          href={content.ctaHref}
           className={styles.ctaLink}
           onClick={(e) => e.stopPropagation()}
         >
-          ВСЕ УСЛУГИ ↗
+          {content.ctaLabel}
         </Link>
       </div>
     </InteractiveCard>

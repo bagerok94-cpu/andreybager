@@ -1,36 +1,69 @@
 import type {
-  SiteSettings,
-  About,
-  PortfolioProject,
-  Service,
-  Tool,
-  Contact,
+  AboutContent,
+  ContactContent,
+  HeroContent,
+  HomeContent,
+  MusicContent,
   MusicTrack,
+  NavItem,
+  PortfolioContent,
+  PortfolioProject,
+  ProjectContent,
+  ServicesContent,
+  SiteSettings,
+  ToolsContent,
 } from '@/types';
+import {
+  aboutContent,
+  contactContent,
+  heroContent,
+  musicContent,
+  navigation,
+  portfolioContent,
+  projectContent,
+  servicesContent,
+  siteSettings,
+  toolsContent,
+} from './data';
 
 /**
  * Content Layer Abstraction.
- * Decouples content access from UI presentation.
- * In future phases, these functions will fetch from local static files, CMS, or DB.
+ * UI reads content only through this provider.
+ * Static today; later this can fetch from API / PostgreSQL without changing components.
  */
 
 export interface ContentProvider {
-  getSiteSettings(): Promise<SiteSettings | null>;
-  getAbout(): Promise<About | null>;
+  getSiteSettings(): Promise<SiteSettings>;
+  getNavigation(): Promise<readonly NavItem[]>;
+  getHero(): Promise<HeroContent>;
+  getAbout(): Promise<AboutContent>;
+  getPortfolio(): Promise<PortfolioContent>;
   getPortfolioProjects(): Promise<PortfolioProject[]>;
   getProjectById(id: string): Promise<PortfolioProject | null>;
-  getServices(): Promise<Service[]>;
-  getTools(): Promise<Tool[]>;
-  getContact(): Promise<Contact | null>;
+  getServices(): Promise<ServicesContent>;
+  getTools(): Promise<ToolsContent>;
+  getContact(): Promise<ContactContent>;
+  getProject(): Promise<ProjectContent>;
+  getMusic(): Promise<MusicContent>;
   getMusicTracks(): Promise<MusicTrack[]>;
+  getHome(): Promise<HomeContent>;
 }
 
 export const contentLayer: ContentProvider = {
   async getSiteSettings() {
-    return null;
+    return siteSettings;
+  },
+  async getNavigation() {
+    return navigation;
+  },
+  async getHero() {
+    return heroContent;
   },
   async getAbout() {
-    return null;
+    return aboutContent;
+  },
+  async getPortfolio() {
+    return portfolioContent;
   },
   async getPortfolioProjects() {
     return [];
@@ -39,15 +72,33 @@ export const contentLayer: ContentProvider = {
     return null;
   },
   async getServices() {
-    return [];
+    return servicesContent;
   },
   async getTools() {
-    return [];
+    return toolsContent;
   },
   async getContact() {
-    return null;
+    return contactContent;
+  },
+  async getProject() {
+    return projectContent;
+  },
+  async getMusic() {
+    return musicContent;
   },
   async getMusicTracks() {
     return [];
+  },
+  async getHome() {
+    return {
+      hero: heroContent,
+      about: aboutContent,
+      portfolio: portfolioContent,
+      services: servicesContent,
+      tools: toolsContent,
+      contact: contactContent,
+      project: projectContent,
+      music: musicContent,
+    };
   },
 };

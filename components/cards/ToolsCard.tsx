@@ -1,22 +1,15 @@
 'use client';
 
 import Link from 'next/link';
+import type { ToolsContent } from '@/types';
 import { InteractiveCard } from './InteractiveCard';
 import styles from './CardsCommon.module.css';
 
-const TOOLS_LIST = [
-  { name: 'Figma', desc: 'Дизайн интерфейсов' },
-  { name: 'Tilda', desc: 'Создание сайтов' },
-  { name: 'VS Code', desc: 'Разработка' },
-  { name: 'Photoshop', desc: 'Графика и обработка' },
-  { name: 'Illustrator', desc: 'Векторная графика' },
-  { name: 'AI Tools', desc: 'AI для задач и генерации' },
-  { name: 'Telegram API', desc: 'Боты и интеграции' },
-  { name: 'Python', desc: 'Автоматизация и скрипты' },
-  { name: 'Automation', desc: 'Автоматизация процессов' },
-];
+interface ToolsCardProps {
+  content: ToolsContent;
+}
 
-export function ToolsCard() {
+export function ToolsCard({ content }: ToolsCardProps) {
   const icon = (
     <svg className={styles.iconSvg} viewBox="0 0 24 24" aria-hidden="true">
       <rect x="3" y="3" width="7" height="7" />
@@ -29,39 +22,39 @@ export function ToolsCard() {
   const preview = (
     <>
       <p className={styles.previewDesc}>
-        Инструменты, которые я использую
+        {content.previewDescLines[0]}
         <br />
-        в работе.
+        {content.previewDescLines[1]}
       </p>
-      <span className={styles.badge}>Стек и софт</span>
+      <span className={styles.badge}>{content.previewBadge}</span>
     </>
   );
 
   return (
     <InteractiveCard
       id="tools"
-      title="ИНСТРУМЕНТЫ"
+      title={content.title}
       icon={icon}
       animationType="geometric-assemble"
       preview={preview}
     >
       <div className={styles.toolsGrid}>
-        {TOOLS_LIST.map((tool) => (
-          <div key={tool.name} className={styles.itemRow}>
+        {content.items.map((tool) => (
+          <div key={tool.id} className={styles.itemRow}>
             <span className={styles.itemTitle}>{tool.name}</span>
-            <span className={styles.itemDesc}>{tool.desc}</span>
+            <span className={styles.itemDesc}>{tool.description}</span>
           </div>
         ))}
       </div>
 
       <div className={styles.openFooter}>
-        <span className={styles.badge}>9 ключевых инструментов</span>
+        <span className={styles.badge}>{content.footerBadge}</span>
         <Link
-          href="/tools"
+          href={content.ctaHref}
           className={styles.ctaLink}
           onClick={(e) => e.stopPropagation()}
         >
-          ВСЕ ИНСТРУМЕНТЫ ↗
+          {content.ctaLabel}
         </Link>
       </div>
     </InteractiveCard>

@@ -1,17 +1,15 @@
 'use client';
 
 import Link from 'next/link';
+import type { ProjectContent } from '@/types';
 import { InteractiveCard } from './InteractiveCard';
 import styles from './CardsCommon.module.css';
 
-const STEPS = [
-  { step: '01', title: 'Обсудим задачу' },
-  { step: '02', title: 'Определим решение' },
-  { step: '03', title: 'Запустим проект' },
-];
+interface ProjectCardProps {
+  content: ProjectContent;
+}
 
-export function ProjectCard() {
-  // Minimalist monochrome rocket icon
+export function ProjectCard({ content }: ProjectCardProps) {
   const icon = (
     <svg className={styles.iconSvg} viewBox="0 0 24 24" aria-hidden="true">
       <path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z" />
@@ -24,28 +22,26 @@ export function ProjectCard() {
   const preview = (
     <>
       <p className={styles.previewDesc}>
-        Есть идея?
+        {content.previewDescLines[0]}
         <br />
-        Давайте обсудим.
+        {content.previewDescLines[1]}
       </p>
-      <span className={styles.badge}>Сотрудничество</span>
+      <span className={styles.badge}>{content.previewBadge}</span>
     </>
   );
 
   return (
     <InteractiveCard
       id="project"
-      title="ГОТОВ К ПРОЕКТУ?"
+      title={content.title}
       icon={icon}
       animationType="rocket-launch"
       preview={preview}
     >
-      <p className={styles.openLead}>
-        Расскажите, что хотите создать. Вместе определим задачу и найдём решение.
-      </p>
+      <p className={styles.openLead}>{content.openLead}</p>
 
       <div className={styles.itemsList}>
-        {STEPS.map((s) => (
+        {content.steps.map((s) => (
           <div key={s.step} className={styles.itemRow}>
             <span className={styles.itemTitle}>{`${s.step} — ${s.title}`}</span>
           </div>
@@ -53,13 +49,13 @@ export function ProjectCard() {
       </div>
 
       <div className={styles.openFooter}>
-        <span className={styles.badge}>Старт за 1-2 дня</span>
+        <span className={styles.badge}>{content.footerBadge}</span>
         <Link
-          href="/contact"
+          href={content.ctaHref}
           className={styles.ctaLink}
           onClick={(e) => e.stopPropagation()}
         >
-          ОБСУДИТЬ ПРОЕКТ ↗
+          {content.ctaLabel}
         </Link>
       </div>
     </InteractiveCard>

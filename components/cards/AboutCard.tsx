@@ -1,16 +1,17 @@
 'use client';
 
 import Link from 'next/link';
+import type { AboutContent } from '@/types';
 import { InteractiveCard } from './InteractiveCard';
 import styles from './AboutCard.module.css';
 
-export function AboutCard() {
+interface AboutCardProps {
+  content: AboutContent;
+}
+
+export function AboutCard({ content }: AboutCardProps) {
   const visualIcon = (
-    <svg
-      className={styles.iconSvg}
-      viewBox="0 0 24 24"
-      aria-hidden="true"
-    >
+    <svg className={styles.iconSvg} viewBox="0 0 24 24" aria-hidden="true">
       <circle cx="12" cy="8" r="4" />
       <path d="M6 20v-2a6 6 0 0 1 12 0v2" />
     </svg>
@@ -19,59 +20,47 @@ export function AboutCard() {
   const previewContent = (
     <>
       <p className={styles.closedDesc}>
-        Веб-дизайнер и специалист
+        {content.closedDescLines[0]}
         <br />
-        по AI и автоматизации.
+        {content.closedDescLines[1]}
       </p>
-      <p className={styles.closedSub}>
-        Создаю современные цифровые решения.
-      </p>
-      <span className={styles.badge}>8+ лет в дизайне</span>
+      <p className={styles.closedSub}>{content.closedSub}</p>
+      <span className={styles.badge}>{content.badge}</span>
     </>
   );
 
   return (
     <InteractiveCard
       id="about"
-      title="ОБО МНЕ"
+      title={content.title}
       icon={visualIcon}
       animationType="ring"
       preview={previewContent}
     >
       <div className={styles.openHeader}>
-        <h3 className={styles.openTitle}>ANDREY BAGER</h3>
-        <span className={styles.openSubtitle}>WEB DESIGNER / AI / AUTOMATION</span>
+        <h3 className={styles.openTitle}>{content.name}</h3>
+        <span className={styles.openSubtitle}>{content.role}</span>
       </div>
 
-      <p className={styles.openLead}>
-        Создаю сайты и цифровые решения, которые помогают бизнесу выглядеть профессионально и работать эффективнее.
-      </p>
+      <p className={styles.openLead}>{content.openLead}</p>
 
       <div className={styles.pillarsList}>
-        <div className={styles.pillarItem}>
-          <span className={styles.pillarNumber}>01 / ДИЗАЙН</span>
-          <p className={styles.pillarText}>Веб-дизайн, интерфейсы и цифровые продукты.</p>
-        </div>
-
-        <div className={styles.pillarItem}>
-          <span className={styles.pillarNumber}>02 / РАЗРАБОТКА</span>
-          <p className={styles.pillarText}>Создание и запуск сайтов.</p>
-        </div>
-
-        <div className={styles.pillarItem}>
-          <span className={styles.pillarNumber}>03 / AI & AUTOMATION</span>
-          <p className={styles.pillarText}>AI-инструменты, Telegram-боты и автоматизация процессов.</p>
-        </div>
+        {content.pillars.map((pillar) => (
+          <div key={pillar.number} className={styles.pillarItem}>
+            <span className={styles.pillarNumber}>{pillar.number}</span>
+            <p className={styles.pillarText}>{pillar.text}</p>
+          </div>
+        ))}
       </div>
 
       <div className={styles.openFooter}>
-        <span className={styles.badge}>8+ лет в дизайне</span>
+        <span className={styles.badge}>{content.badge}</span>
         <Link
-          href="/about"
+          href={content.ctaHref}
           className={styles.ctaLink}
           onClick={(e) => e.stopPropagation()}
         >
-          ПОДРОБНЕЕ ОБО МНЕ ↗
+          {content.ctaLabel}
         </Link>
       </div>
     </InteractiveCard>

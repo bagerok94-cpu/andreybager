@@ -1,31 +1,35 @@
+'use client';
+
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import type { NavItem } from '@/types';
 import styles from './DesktopNavigation.module.css';
 
-interface NavItem {
-  label: string;
-  href: string;
+interface DesktopNavigationProps {
+  items: readonly NavItem[];
 }
 
-const NAV_ITEMS: readonly NavItem[] = [
-  { label: 'ОБО МНЕ', href: '/about' },
-  { label: 'ПОРТФОЛИО', href: '/portfolio' },
-  { label: 'КОНТАКТЫ', href: '/contact' },
-  { label: 'ИНСТРУМЕНТЫ', href: '/tools' },
-  { label: 'ЧТО Я ДЕЛАЮ', href: '/services' },
-  { label: 'МОЯ МУЗЫКА', href: '/music' },
-];
+export function DesktopNavigation({ items }: DesktopNavigationProps) {
+  const pathname = usePathname();
+  const desktopItems = items.filter((item) => item.desktop);
 
-export function DesktopNavigation() {
   return (
     <nav className={styles.nav} aria-label="Основная навигация">
       <ul className={styles.list}>
-        {NAV_ITEMS.map((item) => (
-          <li key={item.href}>
-            <Link href={item.href} className={styles.link}>
-              {item.label}
-            </Link>
-          </li>
-        ))}
+        {desktopItems.map((item) => {
+          const isActive = pathname === item.href;
+          return (
+            <li key={item.href}>
+              <Link
+                href={item.href}
+                className={isActive ? `${styles.link} ${styles.linkActive}` : styles.link}
+                aria-current={isActive ? 'page' : undefined}
+              >
+                {item.label}
+              </Link>
+            </li>
+          );
+        })}
       </ul>
     </nav>
   );

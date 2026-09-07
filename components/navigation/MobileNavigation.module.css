@@ -58,3 +58,8 @@
   color: var(--text-primary);
   background-color: var(--surface-hover);
 }
+
+.linkActive {
+  color: var(--text-primary);
+  background-color: var(--surface-hover);
+}

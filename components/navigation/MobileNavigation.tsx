@@ -1,31 +1,36 @@
+'use client';
+
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import type { NavItem } from '@/types';
 import styles from './MobileNavigation.module.css';
 
-interface MobileNavItem {
-  label: string;
-  href: string;
+interface MobileNavigationProps {
+  items: readonly NavItem[];
 }
 
-const MOBILE_NAV_ITEMS: readonly MobileNavItem[] = [
-  { label: 'Главная', href: '/' },
-  { label: 'Обо мне', href: '/about' },
-  { label: 'Портфолио', href: '/portfolio' },
-  { label: 'Контакты', href: '/contact' },
-  { label: 'Музыка', href: '/music' },
-];
+export function MobileNavigation({ items }: MobileNavigationProps) {
+  const pathname = usePathname();
+  const mobileItems = items.filter((item) => item.mobile);
 
-export function MobileNavigation() {
   return (
     <div className={styles.wrapper}>
       <nav className={styles.bar} aria-label="Мобильная навигация">
         <ul className={styles.list}>
-          {MOBILE_NAV_ITEMS.map((item) => (
-            <li key={item.href}>
-              <Link href={item.href} className={styles.link}>
-                {item.label}
-              </Link>
-            </li>
-          ))}
+          {mobileItems.map((item) => {
+            const isActive = pathname === item.href;
+            return (
+              <li key={item.href}>
+                <Link
+                  href={item.href}
+                  className={isActive ? `${styles.link} ${styles.linkActive}` : styles.link}
+                  aria-current={isActive ? 'page' : undefined}
+                >
+                  {item.shortLabel ?? item.label}
+                </Link>
+              </li>
+            );
+          })}
         </ul>
       </nav>
     </div>

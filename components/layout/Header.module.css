@@ -3,6 +3,7 @@
   top: 0;
   z-index: 40;
   width: 100%;
+  min-width: 0;
   background-color: var(--surface-glass);
   backdrop-filter: blur(var(--blur-glass));
   -webkit-backdrop-filter: blur(var(--blur-glass));
@@ -14,6 +15,8 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: var(--space-4);
+  min-width: 0;
   height: 72px;
 }
 
@@ -21,6 +24,8 @@
   display: flex;
   flex-direction: column;
   gap: 2px;
+  flex-shrink: 0;
+  min-width: 0;
 }
 
 .title {
@@ -38,6 +43,25 @@
   text-transform: uppercase;
   color: var(--text-muted);
   line-height: 1.2;
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+  .inner {
+    height: auto;
+    min-height: 72px;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    padding-top: var(--space-3);
+    padding-bottom: var(--space-3);
+  }
+
+  .brand {
+    flex: 1 1 auto;
+  }
+
+  .title {
+    font-size: 1rem;
+  }
 }
 
 @media (max-width: 767px) {

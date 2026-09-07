@@ -2,68 +2,148 @@ export interface SiteSettings {
   title: string;
   description: string;
   author: string;
-  siteUrl: string;
   defaultLocale: string;
 }
 
-export interface About {
+export interface NavItem {
+  label: string;
+  shortLabel?: string;
+  href: string;
+  desktop: boolean;
+  mobile: boolean;
+}
+
+export interface HeroContent {
+  nameLines: [string, string];
+  taglineLines: [string, string];
+  taglineAccent: string;
+  avatarMonogram: string;
+  avatarStatus: string;
+  avatarRole: string;
+}
+
+export interface AboutPillar {
+  number: string;
+  text: string;
+}
+
+export interface AboutContent {
+  title: string;
   name: string;
   role: string;
-  bio: string;
-  avatarUrl?: string;
-  skills: string[];
+  closedDescLines: [string, string];
+  closedSub: string;
+  badge: string;
+  openLead: string;
+  pillars: AboutPillar[];
+  ctaLabel: string;
+  ctaHref: string;
 }
 
 export interface PortfolioProject {
   id: string;
   title: string;
-  category: string;
   description: string;
-  image: string;
-  gallery: string[];
-  url?: string;
-  year: number;
   status: string;
-  order: number;
-  published: boolean;
-  createdAt: string | Date;
-  updatedAt: string | Date;
+}
+
+export interface PortfolioContent {
+  title: string;
+  previewDescLines: [string, string];
+  previewBadge: string;
+  openLead: string;
+  status: string;
+  footerBadge: string;
+  ctaLabel: string;
+  ctaHref: string;
 }
 
 export interface Service {
   id: string;
+  number: string;
   title: string;
   description: string;
-  features: string[];
-  order: number;
-  published: boolean;
+}
+
+export interface ServicesContent {
+  title: string;
+  previewDescLines: [string, string];
+  previewBadge: string;
+  items: Service[];
+  footerBadge: string;
+  ctaLabel: string;
+  ctaHref: string;
 }
 
 export interface Tool {
   id: string;
   name: string;
-  category: string;
-  description?: string;
-  icon?: string;
-  proficiency?: string;
+  description: string;
 }
 
-export interface Contact {
-  email: string;
-  telegram?: string;
-  github?: string;
-  linkedin?: string;
-  location?: string;
+export interface ToolsContent {
+  title: string;
+  previewDescLines: [string, string];
+  previewBadge: string;
+  items: Tool[];
+  footerBadge: string;
+  ctaLabel: string;
+  ctaHref: string;
+}
+
+export interface ContactChannel {
+  label: string;
+  value: string;
+  href: string;
+  ctaLabel: string;
+}
+
+export interface ContactContent {
+  title: string;
+  previewDescLines: [string, string];
+  previewBadge: string;
+  channels: ContactChannel[];
+  openLead: string;
+  footerBadge: string;
+  ctaLabel: string;
+  ctaHref: string;
+}
+
+export interface ProjectStep {
+  step: string;
+  title: string;
+}
+
+export interface ProjectContent {
+  title: string;
+  previewDescLines: [string, string];
+  previewBadge: string;
+  openLead: string;
+  steps: ProjectStep[];
+  footerBadge: string;
+  ctaLabel: string;
+  ctaHref: string;
 }
 
 export interface MusicTrack {
   id: string;
   title: string;
-  artist: string;
-  cover: string;
-  audioUrl: string;
-  order: number;
-  published: boolean;
-  createdAt: string | Date;
-  updatedAt: string | Date;
+}
+
+export interface MusicContent {
+  title: string;
+  previewDesc: string;
+  ctaLabel: string;
+  ctaHref: string;
+}
+
+export interface HomeContent {
+  hero: HeroContent;
+  about: AboutContent;
+  portfolio: PortfolioContent;
+  services: ServicesContent;
+  tools: ToolsContent;
+  contact: ContactContent;
+  project: ProjectContent;
+  music: MusicContent;
 }
