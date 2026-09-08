@@ -51,6 +51,7 @@ export interface PortfolioProject {
   coverImage?: string;
   gallery?: string[];
   url?: string;
+  technologies?: string[];
   year?: number;
   order?: number;
   published?: boolean;
@@ -75,6 +76,10 @@ export interface Service {
   number: string;
   title: string;
   description: string;
+  order?: number;
+  published?: boolean;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export interface ServicesContent {
@@ -91,6 +96,10 @@ export interface Tool {
   id: string;
   name: string;
   description: string;
+  order?: number;
+  published?: boolean;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export interface ToolsContent {
@@ -108,6 +117,8 @@ export interface ContactChannel {
   value: string;
   href: string;
   ctaLabel: string;
+  id?: string;
+  order?: number;
 }
 
 export interface ContactContent {
@@ -140,6 +151,15 @@ export interface ProjectContent {
 export interface MusicTrack {
   id: string;
   title: string;
+  description?: string;
+  coverImage?: string;
+  audioUrl?: string;
+  order?: number;
+  published?: boolean;
+  playable?: boolean;
+  downloadable?: boolean;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export interface MusicContent {

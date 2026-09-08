@@ -28,9 +28,10 @@ import {
 import { portfolioProjects } from './projects';
 
 /**
- * Content Layer Abstraction.
- * UI reads content only through this provider.
- * Static today; later this can fetch from API / PostgreSQL without changing components.
+ * Public Content Layer.
+ * UI reads published content only through this provider.
+ * Draft / preview live in lib/content/draft.ts and must not be imported by public pages.
+ * Static today; later this can fetch published rows from PostgreSQL without changing components.
  */
 
 export interface ContentProvider {

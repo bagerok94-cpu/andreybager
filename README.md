@@ -29,6 +29,7 @@ Data Layer (lib/db) → PostgreSQL   ← заглушка
 - React-компоненты **никогда** не обращаются напрямую к базе данных.
 - Контент отделён от визуального представления через `lib/content` и `types/`.
 - Сейчас контент статический. Позже `ContentProvider` сможет читать PostgreSQL без смены UI.
+- CMS-фундамент: `docs/CMS_ARCHITECTURE.md` (draft → preview → Publish All). Telegram и БД ещё не подключены.
 
 ## Структура проекта
 
