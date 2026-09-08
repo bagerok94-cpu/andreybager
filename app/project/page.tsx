@@ -21,13 +21,17 @@ export default async function ProjectPage() {
       title={project.title}
       lead={project.openLead}
     >
-      <div className={pageStyles.empty}>
-        <p className={pageStyles.emptyText}>
-          {project.previewDescLines.join(' ')}
-        </p>
+      <div className={pageStyles.list}>
+        {project.steps.map((step) => (
+          <div key={step.step} className={pageStyles.item}>
+            <span className={pageStyles.itemLabel}>{step.step}</span>
+            <span className={pageStyles.itemTitle}>{step.title}</span>
+          </div>
+        ))}
       </div>
       <Link href={project.ctaHref} className={pageStyles.cta}>
-        {project.ctaLabel}
+        <span>{project.ctaLabel.replace(/\s*↗\s*$/, '')}</span>
+        <span aria-hidden="true">↗</span>
       </Link>
     </PageShell>
   );

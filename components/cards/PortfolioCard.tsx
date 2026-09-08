@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import type { PortfolioContent, PortfolioProject } from '@/types';
 import { InteractiveCard } from './InteractiveCard';
+import { CtaContent, IconArrow } from './cardIcons';
 import styles from './CardsCommon.module.css';
 
 interface PortfolioCardProps {
@@ -29,7 +30,6 @@ export function PortfolioCard({ content, projects }: PortfolioCardProps) {
         <br />
         {content.previewDescLines[1]}
       </p>
-      <span className={styles.badge}>{content.previewBadge}</span>
     </>
   );
 
@@ -46,37 +46,34 @@ export function PortfolioCard({ content, projects }: PortfolioCardProps) {
       {projects.length > 0 ? (
         <div className={styles.itemsList}>
           {projects.map((item) => (
-            <div key={item.id} className={styles.itemRow}>
-              <div className={styles.itemHeader}>
-                <Link
-                  href={projectHref(item)}
-                  className={styles.itemTitle}
-                  onClick={(e) => e.stopPropagation()}
-                >
-                  {item.title}
-                </Link>
-                <span className={styles.itemStatus}>{item.status}</span>
-              </div>
-              <p className={styles.itemDesc}>{item.description}</p>
-            </div>
+            <Link
+              key={item.id}
+              href={projectHref(item)}
+              className={styles.actionRow}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <span className={styles.actionBody}>
+                <span className={styles.itemTitle}>{item.title}</span>
+                <span className={styles.itemDesc}>{item.description}</span>
+              </span>
+              <span className={styles.itemStatus}>{item.status}</span>
+              <IconArrow />
+            </Link>
           ))}
         </div>
       ) : (
-        <div className={styles.itemsList}>
-          <div className={styles.itemRow}>
-            <span className={styles.itemStatus}>{content.status}</span>
-          </div>
+        <div className={styles.emptySlot}>
+          <span className={styles.itemStatus}>{content.status}</span>
         </div>
       )}
 
       <div className={styles.openFooter}>
-        <span className={styles.badge}>{content.footerBadge}</span>
         <Link
           href={content.ctaHref}
           className={styles.ctaLink}
           onClick={(e) => e.stopPropagation()}
         >
-          {content.ctaLabel}
+          <CtaContent label={content.ctaLabel} />
         </Link>
       </div>
     </InteractiveCard>

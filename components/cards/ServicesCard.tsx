@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import type { ServicesContent } from '@/types';
 import { InteractiveCard } from './InteractiveCard';
+import { CtaContent, IconArrow, ServiceIcon } from './cardIcons';
 import styles from './CardsCommon.module.css';
 
 interface ServicesCardProps {
@@ -25,7 +26,6 @@ export function ServicesCard({ content }: ServicesCardProps) {
         <br />
         {content.previewDescLines[1]}
       </p>
-      <span className={styles.badge}>{content.previewBadge}</span>
     </>
   );
 
@@ -39,21 +39,31 @@ export function ServicesCard({ content }: ServicesCardProps) {
     >
       <div className={styles.itemsList}>
         {content.items.map((svc) => (
-          <div key={svc.id} className={styles.itemRow}>
-            <span className={styles.itemTitle}>{`${svc.number} — ${svc.title}`}</span>
-            <p className={styles.itemDesc}>{svc.description}</p>
-          </div>
+          <Link
+            key={svc.id}
+            href={content.ctaHref}
+            className={styles.actionRow}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <span className={styles.actionIcon}>
+              <ServiceIcon id={svc.id} />
+            </span>
+            <span className={styles.actionBody}>
+              <span className={styles.itemTitle}>{svc.title}</span>
+              <span className={styles.itemDesc}>{svc.description}</span>
+            </span>
+            <IconArrow />
+          </Link>
         ))}
       </div>
 
       <div className={styles.openFooter}>
-        <span className={styles.badge}>{content.footerBadge}</span>
         <Link
           href={content.ctaHref}
           className={styles.ctaLink}
           onClick={(e) => e.stopPropagation()}
         >
-          {content.ctaLabel}
+          <CtaContent label={content.ctaLabel} />
         </Link>
       </div>
     </InteractiveCard>

@@ -27,7 +27,7 @@ export default async function PortfolioPage() {
       <PortfolioList
         projects={projects}
         emptyStatus={portfolio.status}
-        emptyText={portfolio.openLead}
+        emptyText=""
       />
       <span className={pageStyles.badge}>{portfolio.footerBadge}</span>
     </PageShell>

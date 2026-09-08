@@ -30,7 +30,6 @@ export default async function MusicPage() {
       ) : (
         <div className={pageStyles.empty}>
           <span className={pageStyles.emptyStatus}>{music.status}</span>
-          <p className={pageStyles.emptyText}>{music.previewDesc}</p>
         </div>
       )}
     </PageShell>

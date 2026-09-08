@@ -1,18 +1,18 @@
 /* ==========================================================================
    CARDS COMMON STYLES — ANDREY BAGER
-   Reusable typography, list blocks, badges, and CTAs for card content
+   Restored from approved dark-glass reference
    ========================================================================== */
 
 .previewDesc {
-  font-size: 1rem;
+  font-size: 0.9375rem;
   font-weight: 500;
-  line-height: 1.4;
-  color: var(--text-primary);
+  line-height: 1.45;
+  color: var(--text-secondary);
 }
 
 .previewSub {
-  font-size: 0.875rem;
-  color: var(--text-secondary);
+  font-size: 0.8125rem;
+  color: var(--text-muted);
   line-height: 1.4;
 }
 
@@ -24,26 +24,24 @@
   border-radius: var(--radius-full);
   background-color: var(--surface-hover);
   border: 1px solid var(--border-subtle);
-  font-size: 0.75rem;
+  font-size: 0.6875rem;
   font-weight: 600;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.06em;
   color: var(--text-secondary);
-  margin-top: var(--space-2);
+  margin-top: var(--space-1);
 }
 
 .openLead {
-  font-size: 0.9375rem;
-  line-height: 1.5;
+  font-size: 0.875rem;
+  line-height: 1.55;
   color: var(--text-secondary);
+  text-align: center;
 }
 
 .itemsList {
   display: flex;
   flex-direction: column;
   gap: var(--space-3);
-  padding: var(--space-3) 0;
-  border-top: 1px solid var(--border-subtle);
-  border-bottom: 1px solid var(--border-subtle);
 }
 
 .itemRow {
@@ -63,44 +61,145 @@
 .itemTitle {
   font-size: 0.875rem;
   font-weight: 700;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.02em;
   color: var(--text-primary);
 }
 
 .itemStatus {
-  font-size: 0.75rem;
+  font-size: 0.6875rem;
   color: var(--text-muted);
-  font-weight: 500;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 .itemDesc {
-  font-size: 0.8125rem;
-  color: var(--text-secondary);
-  line-height: 1.4;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  line-height: 1.45;
+}
+
+.actionRow {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  width: 100%;
+  min-width: 0;
+  padding: 14px 16px;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  background-color: rgba(255, 255, 255, 0.025);
+  text-decoration: none;
+  color: inherit;
+  transition:
+    border-color var(--transition-fast),
+    background-color var(--transition-fast);
+}
+
+.actionRow:hover,
+.actionRow:focus-visible {
+  border-color: var(--border-light);
+  background-color: var(--surface-hover);
+  color: inherit;
+}
+
+.actionRow:focus-visible {
+  outline: 2px solid var(--accent-secondary);
+  outline-offset: 2px;
+}
+
+.actionIcon {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-subtle);
+  background-color: rgba(255, 255, 255, 0.04);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.actionBody {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  flex: 1;
+}
+
+.rowArrow {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  fill: none;
+  stroke: var(--text-muted);
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
 .toolsGrid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: var(--space-3);
-  padding: var(--space-3) 0;
-  border-top: 1px solid var(--border-subtle);
-  border-bottom: 1px solid var(--border-subtle);
 }
 
-@media (max-width: 600px) {
-  .toolsGrid {
-    grid-template-columns: 1fr;
-  }
+.toolCell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  text-align: center;
+  gap: 6px;
+  min-width: 0;
+  padding: 16px 8px 14px;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  background-color: rgba(255, 255, 255, 0.025);
+}
+
+.toolMarkWrap {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.toolMark {
+  width: 28px;
+  height: 28px;
+}
+
+.toolLetter {
+  font-size: 0.8125rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  line-height: 1;
+}
+
+.toolTilda { color: #ff4b4b; }
+.toolPs { color: #31a8ff; }
+.toolAi { color: #ff9a00; }
+
+.toolName {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: 0.01em;
+}
+
+.toolDesc {
+  font-size: 0.625rem;
+  line-height: 1.3;
+  color: var(--text-muted);
 }
 
 .contactBlock {
   display: flex;
   flex-direction: column;
-  gap: var(--space-4);
-  padding: var(--space-3) 0;
-  border-top: 1px solid var(--border-subtle);
-  border-bottom: 1px solid var(--border-subtle);
+  gap: var(--space-3);
 }
 
 .contactChannel {
@@ -110,55 +209,124 @@
 }
 
 .channelLabel {
-  font-size: 0.6875rem;
+  font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--text-muted);
+  color: var(--text-primary);
 }
 
 .channelValue {
-  font-size: 0.9375rem;
-  font-weight: 600;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--text-muted);
+}
+
+.emptySlot {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-2);
+  padding: var(--space-5);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  background-color: rgba(255, 255, 255, 0.02);
+}
+
+.heroVisual {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 132px;
+  margin: var(--space-2) 0 var(--space-1);
+}
+
+.heroGlow {
+  position: absolute;
+  width: 160px;
+  height: 90px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.rocketSvg {
+  width: 72px;
+  height: 72px;
+  fill: none;
+  stroke: var(--text-primary);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  position: relative;
+  z-index: 1;
+}
+
+.heroParticle {
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  background: #fff;
+  opacity: 0.45;
+  pointer-events: none;
+}
+
+.heroTitle {
+  font-size: 1.25rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  text-align: center;
   color: var(--text-primary);
 }
 
 .openFooter {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--space-4);
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(--space-3);
   padding-top: var(--space-2);
-  flex-wrap: wrap;
 }
 
 .ctaLink {
-  display: inline-flex;
+  display: flex;
   align-items: center;
-  gap: var(--space-2);
-  padding: var(--space-3) var(--space-5);
-  border-radius: var(--radius-md);
-  background-color: var(--text-primary);
-  color: var(--bg-main);
-  font-size: 0.8125rem;
+  justify-content: space-between;
+  width: 100%;
+  gap: var(--space-3);
+  padding: 14px 20px;
+  border-radius: var(--radius-lg);
+  background-color: #ffffff;
+  color: #090a0d;
+  font-size: 0.75rem;
   font-weight: 700;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
+  text-decoration: none;
   transition:
     background-color var(--transition-fast),
     transform var(--transition-fast);
-  text-decoration: none;
 }
 
 .ctaLink:hover {
   background-color: var(--accent-secondary);
-  transform: translateY(-1px);
-  color: var(--bg-main);
+  color: #090a0d;
+  transform: none;
 }
 
 .ctaLink:focus-visible {
   outline: 2px solid var(--accent-secondary);
-  outline-offset: 2px;
+  outline-offset: 3px;
+}
+
+.ctaLink:active {
+  transform: scale(0.99);
+}
+
+.ctaArrow {
+  font-size: 0.875rem;
+  line-height: 1;
 }
 
 .secondaryCtaLink {
@@ -192,20 +360,30 @@
   height: 18px;
   fill: none;
   stroke: var(--text-primary);
-  stroke-width: 2;
+  stroke-width: 1.7;
   stroke-linecap: round;
   stroke-linejoin: round;
 }
 
-@media (max-width: 767px) {
-  .openFooter {
-    flex-direction: column;
-    align-items: stretch;
+@media (hover: none) {
+  .ctaLink:hover {
+    background-color: #ffffff;
+    transform: none;
   }
 
-  .ctaLink {
-    width: 100%;
-    justify-content: center;
+  .actionRow:hover {
+    border-color: var(--border-subtle);
+    background-color: rgba(255, 255, 255, 0.025);
+  }
+}
+
+@media (max-width: 767px) {
+  .toolCell {
+    padding: 12px 6px 10px;
+  }
+
+  .toolName {
+    overflow-wrap: anywhere;
   }
 
   .itemTitle {

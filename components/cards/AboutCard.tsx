@@ -3,7 +3,9 @@
 import Link from 'next/link';
 import type { AboutContent } from '@/types';
 import { InteractiveCard } from './InteractiveCard';
+import { CtaContent } from './cardIcons';
 import styles from './AboutCard.module.css';
+import common from './CardsCommon.module.css';
 
 interface AboutCardProps {
   content: AboutContent;
@@ -25,7 +27,6 @@ export function AboutCard({ content }: AboutCardProps) {
         {content.closedDescLines[1]}
       </p>
       <p className={styles.closedSub}>{content.closedSub}</p>
-      <span className={styles.badge}>{content.badge}</span>
     </>
   );
 
@@ -46,21 +47,22 @@ export function AboutCard({ content }: AboutCardProps) {
 
       <div className={styles.pillarsList}>
         {content.pillars.map((pillar) => (
-          <div key={pillar.number} className={styles.pillarItem}>
-            <span className={styles.pillarNumber}>{pillar.number}</span>
-            <p className={styles.pillarText}>{pillar.text}</p>
+          <div key={pillar.number} className={common.actionRow}>
+            <span className={common.actionBody}>
+              <span className={common.itemTitle}>{pillar.number}</span>
+              <span className={common.itemDesc}>{pillar.text}</span>
+            </span>
           </div>
         ))}
       </div>
 
-      <div className={styles.openFooter}>
-        <span className={styles.badge}>{content.badge}</span>
+      <div className={common.openFooter}>
         <Link
           href={content.ctaHref}
-          className={styles.ctaLink}
+          className={common.ctaLink}
           onClick={(e) => e.stopPropagation()}
         >
-          {content.ctaLabel}
+          <CtaContent label={content.ctaLabel} />
         </Link>
       </div>
     </InteractiveCard>

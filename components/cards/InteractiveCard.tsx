@@ -194,11 +194,39 @@ export function InteractiveCard({
       {isOpen && (
         <button
           type="button"
+          className={styles.backButton}
+          onClick={closeCard}
+          aria-label="Назад"
+        >
+          <svg viewBox="0 0 24 24" aria-hidden="true" width="18" height="18">
+            <path
+              d="M15 6L9 12l6 6"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.8"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+        </button>
+      )}
+
+      {isOpen && (
+        <button
+          type="button"
           className={styles.closeButton}
           onClick={closeCard}
           aria-label="Закрыть карточку"
         >
-          ✕
+          <svg viewBox="0 0 24 24" aria-hidden="true" width="16" height="16">
+            <path
+              d="M6 6l12 12M18 6L6 18"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.8"
+              strokeLinecap="round"
+            />
+          </svg>
         </button>
       )}
 

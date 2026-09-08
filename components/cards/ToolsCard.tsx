@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import type { ToolsContent } from '@/types';
 import { InteractiveCard } from './InteractiveCard';
+import { CtaContent, ToolMark } from './cardIcons';
 import styles from './CardsCommon.module.css';
 
 interface ToolsCardProps {
@@ -26,7 +27,6 @@ export function ToolsCard({ content }: ToolsCardProps) {
         <br />
         {content.previewDescLines[1]}
       </p>
-      <span className={styles.badge}>{content.previewBadge}</span>
     </>
   );
 
@@ -40,21 +40,23 @@ export function ToolsCard({ content }: ToolsCardProps) {
     >
       <div className={styles.toolsGrid}>
         {content.items.map((tool) => (
-          <div key={tool.id} className={styles.itemRow}>
-            <span className={styles.itemTitle}>{tool.name}</span>
-            <span className={styles.itemDesc}>{tool.description}</span>
+          <div key={tool.id} className={styles.toolCell}>
+            <span className={styles.toolMarkWrap}>
+              <ToolMark id={tool.id} />
+            </span>
+            <span className={styles.toolName}>{tool.name}</span>
+            <span className={styles.toolDesc}>{tool.description}</span>
           </div>
         ))}
       </div>
 
       <div className={styles.openFooter}>
-        <span className={styles.badge}>{content.footerBadge}</span>
         <Link
           href={content.ctaHref}
           className={styles.ctaLink}
           onClick={(e) => e.stopPropagation()}
         >
-          {content.ctaLabel}
+          <CtaContent label={content.ctaLabel} />
         </Link>
       </div>
     </InteractiveCard>

@@ -22,7 +22,7 @@ export function PortfolioList({
     return (
       <div className={pageStyles.empty}>
         <span className={pageStyles.emptyStatus}>{emptyStatus}</span>
-        <p className={pageStyles.emptyText}>{emptyText}</p>
+        {emptyText ? <p className={pageStyles.emptyText}>{emptyText}</p> : null}
       </div>
     );
   }

@@ -53,11 +53,11 @@
   right: -5vw;
   height: clamp(48px, 8vw, 76px);
   transform: translateY(-50%);
-  background: rgba(14, 17, 23, 0.6);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-top: 1px solid var(--border-light);
-  border-bottom: 1px solid var(--border-light);
+  background: rgba(16, 18, 24, 0.72);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-top: 1px solid rgba(255, 255, 255, 0.16);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.16);
   box-shadow: 0 4px 28px rgba(0, 0, 0, 0.45);
   pointer-events: none;
   z-index: 2;

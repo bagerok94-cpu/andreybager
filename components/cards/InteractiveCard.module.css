@@ -8,23 +8,34 @@
   position: relative;
   width: 100%;
   min-width: 0;
-  background-color: var(--surface-glass);
+  background-color: rgba(12, 14, 18, 0.92);
   backdrop-filter: blur(var(--blur-glass));
   -webkit-backdrop-filter: blur(var(--blur-glass));
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-xl);
-  box-shadow: var(--shadow-glass);
+  border: 1px solid var(--border-light);
+  border-radius: 22px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.35);
   transition:
     border-color var(--transition-base),
     background-color var(--transition-base),
-    box-shadow var(--transition-base),
-    transform var(--transition-base);
+    box-shadow var(--transition-base);
   overflow: hidden;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .card:hover {
-  border-color: var(--border-light);
-  background-color: var(--surface-glass-elevated);
+  border-color: rgba(255, 255, 255, 0.18);
+  background-color: rgba(16, 18, 24, 0.96);
+}
+
+@media (hover: none) {
+  .card:hover {
+    border-color: var(--border-light);
+    background-color: rgba(12, 14, 18, 0.92);
+  }
+
+  .card:active {
+    border-color: var(--border-highlight);
+  }
 }
 
 .card.open,
@@ -75,11 +86,11 @@
 
 .visualWrapper {
   position: relative;
-  width: 36px;
-  height: 36px;
-  border-radius: var(--radius-md);
-  background-color: var(--surface-hover);
-  border: 1px solid var(--border-light);
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background-color: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border-subtle);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -231,31 +242,34 @@
   }
 }
 
-/* 7. Sound Waves Dance & Settle (Music Card) */
-.playSoundWaves .iconContainer {
-  animation: soundWavesSettle 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+/* 7. Sound Waves / equalizer bars */
+.playSoundWaves .iconContainer :global(.eqBar):nth-of-type(1) {
+  transform-origin: center bottom;
+  animation: eqBar 0.8s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-@keyframes soundWavesSettle {
-  0% {
-    transform: scaleY(0.75);
-  }
-  30% {
-    transform: scaleY(1.2);
-  }
-  60% {
-    transform: scaleY(0.9);
-  }
-  100% {
-    transform: scaleY(1);
-  }
+.playSoundWaves .iconContainer :global(.eqBar):nth-of-type(2) {
+  transform-origin: center bottom;
+  animation: eqBar 0.8s 0.08s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.playSoundWaves .iconContainer :global(.eqBar):nth-of-type(3) {
+  transform-origin: center bottom;
+  animation: eqBar 0.8s 0.16s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes eqBar {
+  0% { transform: scaleY(0.7); }
+  35% { transform: scaleY(1.25); }
+  65% { transform: scaleY(0.85); }
+  100% { transform: scaleY(1); }
 }
 
 /* --- Typography & Base Card UI --- */
 .title {
-  font-size: 1.125rem;
+  font-size: 0.9375rem;
   font-weight: 700;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--text-primary);
   min-width: 0;
@@ -263,7 +277,7 @@
 }
 
 .expandIcon {
-  font-size: 1.125rem;
+  font-size: 1rem;
   color: var(--text-muted);
   flex-shrink: 0;
   transition: transform var(--transition-fast), color var(--transition-fast);
@@ -272,6 +286,25 @@
 .trigger:hover .expandIcon {
   color: var(--text-primary);
   transform: translate(2px, -2px);
+}
+
+.card.open .visualWrapper,
+.card.opening .visualWrapper {
+  display: none;
+}
+
+.card.open .headerRow,
+.card.opening .headerRow {
+  justify-content: center;
+  padding: 0 44px;
+}
+
+.card.open .title,
+.card.opening .title {
+  width: 100%;
+  text-align: center;
+  font-size: 1.125rem;
+  letter-spacing: 0.14em;
 }
 
 /* --- Preview (Closed Content) --- */
@@ -309,43 +342,55 @@
 
 .expandedInner {
   overflow: hidden;
-  padding: 0 var(--space-6) var(--space-6);
+  padding: 0 var(--space-5) var(--space-5);
   display: flex;
   flex-direction: column;
-  gap: var(--space-5);
-  border-top: 1px solid var(--border-subtle);
-  margin-top: var(--space-2);
-  padding-top: var(--space-5);
+  gap: var(--space-4);
 }
 
-/* Close button inside open state */
-.closeButton {
+.backButton {
   position: absolute;
-  top: var(--space-5);
-  right: var(--space-5);
+  top: 18px;
+  left: 16px;
   width: 32px;
   height: 32px;
   border-radius: var(--radius-full);
-  background-color: var(--surface-hover);
-  border: 1px solid var(--border-subtle);
+  background: transparent;
+  border: none;
   color: var(--text-secondary);
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   z-index: 10;
-  transition:
-    background-color var(--transition-fast),
-    border-color var(--transition-fast),
-    color var(--transition-fast);
+  transition: color var(--transition-fast), background-color var(--transition-fast);
 }
 
+.closeButton {
+  position: absolute;
+  top: 18px;
+  right: 16px;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-full);
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+  transition: color var(--transition-fast), background-color var(--transition-fast);
+}
+
+.backButton:hover,
 .closeButton:hover {
-  background-color: var(--surface-active);
-  border-color: var(--border-light);
   color: var(--text-primary);
+  background-color: var(--surface-hover);
 }
 
+.backButton:focus-visible,
 .closeButton:focus-visible {
   outline: 2px solid var(--accent-secondary);
   outline-offset: 2px;
@@ -361,6 +406,7 @@
   .previewContent,
   .expandIcon,
   .closeButton,
+  .backButton,
   .iconContainer {
     transition: none !important;
     animation: none !important;
@@ -372,7 +418,8 @@
   .playGeometricAssemble .iconContainer,
   .playLayersFold .iconContainer,
   .playRocketLaunch .iconContainer,
-  .playSoundWaves .iconContainer {
+  .playSoundWaves .iconContainer,
+  .playSoundWaves .iconContainer :global(.eqBar) {
     animation: none !important;
   }
 }

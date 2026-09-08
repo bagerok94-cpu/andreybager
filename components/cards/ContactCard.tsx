@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import type { ContactContent } from '@/types';
 import { InteractiveCard } from './InteractiveCard';
+import { ChannelIcon, CtaContent, IconArrow } from './cardIcons';
 import styles from './CardsCommon.module.css';
 
 interface ContactCardProps {
@@ -24,7 +25,6 @@ export function ContactCard({ content }: ContactCardProps) {
         <br />
         {content.previewDescLines[1]}
       </p>
-      <span className={styles.badge}>{content.previewBadge}</span>
     </>
   );
 
@@ -38,32 +38,35 @@ export function ContactCard({ content }: ContactCardProps) {
     >
       <div className={styles.contactBlock}>
         {content.channels.map((channel) => (
-          <div key={channel.label} className={styles.contactChannel}>
-            <span className={styles.channelLabel}>{channel.label}</span>
-            <span className={styles.channelValue}>{channel.value}</span>
-            <a
-              href={channel.href}
-              target={channel.href.startsWith('http') ? '_blank' : undefined}
-              rel={channel.href.startsWith('http') ? 'noopener noreferrer' : undefined}
-              className={styles.secondaryCtaLink}
-              onClick={(e) => e.stopPropagation()}
-            >
-              {channel.ctaLabel}
-            </a>
-          </div>
+          <a
+            key={channel.label}
+            href={channel.href}
+            target={channel.href.startsWith('http') ? '_blank' : undefined}
+            rel={channel.href.startsWith('http') ? 'noopener noreferrer' : undefined}
+            className={styles.actionRow}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <span className={styles.actionIcon}>
+              <ChannelIcon label={channel.label} />
+            </span>
+            <span className={styles.actionBody}>
+              <span className={styles.channelLabel}>{channel.label}</span>
+              <span className={styles.channelValue}>{channel.value}</span>
+            </span>
+            <IconArrow />
+          </a>
         ))}
       </div>
 
       <p className={styles.openLead}>{content.openLead}</p>
 
       <div className={styles.openFooter}>
-        <span className={styles.badge}>{content.footerBadge}</span>
         <Link
           href={content.ctaHref}
           className={styles.ctaLink}
           onClick={(e) => e.stopPropagation()}
         >
-          {content.ctaLabel}
+          <CtaContent label={content.ctaLabel} />
         </Link>
       </div>
     </InteractiveCard>

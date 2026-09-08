@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import type { ProjectContent } from '@/types';
 import { InteractiveCard } from './InteractiveCard';
+import { CtaContent, RocketHeroIcon, StepIcon } from './cardIcons';
 import styles from './CardsCommon.module.css';
 
 interface ProjectCardProps {
@@ -26,7 +27,6 @@ export function ProjectCard({ content }: ProjectCardProps) {
         <br />
         {content.previewDescLines[1]}
       </p>
-      <span className={styles.badge}>{content.previewBadge}</span>
     </>
   );
 
@@ -38,24 +38,39 @@ export function ProjectCard({ content }: ProjectCardProps) {
       animationType="rocket-launch"
       preview={preview}
     >
+      <div className={styles.heroVisual} aria-hidden="true">
+        <span className={styles.heroGlow} />
+        <span className={styles.heroParticle} style={{ left: '18%', top: '28%' }} />
+        <span className={styles.heroParticle} style={{ left: '24%', top: '58%' }} />
+        <span className={styles.heroParticle} style={{ left: '72%', top: '22%' }} />
+        <span className={styles.heroParticle} style={{ left: '78%', top: '62%' }} />
+        <span className={styles.heroParticle} style={{ left: '14%', top: '46%' }} />
+        <span className={styles.heroParticle} style={{ left: '84%', top: '40%' }} />
+        <RocketHeroIcon />
+      </div>
+
       <p className={styles.openLead}>{content.openLead}</p>
 
       <div className={styles.itemsList}>
         {content.steps.map((s) => (
-          <div key={s.step} className={styles.itemRow}>
-            <span className={styles.itemTitle}>{`${s.step} — ${s.title}`}</span>
+          <div key={s.step} className={styles.actionRow}>
+            <span className={styles.actionIcon}>
+              <StepIcon step={s.step} />
+            </span>
+            <span className={styles.actionBody}>
+              <span className={styles.itemTitle}>{s.title}</span>
+            </span>
           </div>
         ))}
       </div>
 
       <div className={styles.openFooter}>
-        <span className={styles.badge}>{content.footerBadge}</span>
         <Link
           href={content.ctaHref}
           className={styles.ctaLink}
           onClick={(e) => e.stopPropagation()}
         >
-          {content.ctaLabel}
+          <CtaContent label={content.ctaLabel} />
         </Link>
       </div>
     </InteractiveCard>
