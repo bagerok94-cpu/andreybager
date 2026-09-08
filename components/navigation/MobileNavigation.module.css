@@ -59,6 +59,13 @@
   background-color: var(--surface-hover);
 }
 
+.link:focus-visible {
+  outline: 2px solid var(--accent-secondary);
+  outline-offset: 2px;
+  color: var(--text-primary);
+  background-color: var(--surface-hover);
+}
+
 .linkActive {
   color: var(--text-primary);
   background-color: var(--surface-hover);

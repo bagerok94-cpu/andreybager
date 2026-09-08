@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Link from 'next/link';
 import { PageShell } from '@/components/layout';
 import pageStyles from '@/components/layout/PageShell.module.css';
 import { contentLayer } from '@/lib/content';
@@ -25,6 +26,9 @@ export default async function ProjectPage() {
           {project.previewDescLines.join(' ')}
         </p>
       </div>
+      <Link href={project.ctaHref} className={pageStyles.cta}>
+        {project.ctaLabel}
+      </Link>
     </PageShell>
   );
 }

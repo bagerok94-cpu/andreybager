@@ -21,7 +21,6 @@ export interface InteractiveCardProps {
   preview: React.ReactNode;
   children: React.ReactNode;
   icon?: React.ReactNode;
-  href?: string;
   animationType?: CardAnimationType;
   className?: string;
 }
@@ -49,41 +48,64 @@ export function InteractiveCard({
   const [state, setState] = useState<CardState>('closed');
   const [playAnimation, setPlayAnimation] = useState(false);
   const cardRef = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<HTMLButtonElement>(null);
+  const openTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const closeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const animationTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const isOpen = state === 'open' || state === 'opening';
   const contentId = `card-content-${id}`;
   const headerId = `card-header-${id}`;
 
+  const clearTransitionTimers = useCallback(() => {
+    if (openTimerRef.current) {
+      clearTimeout(openTimerRef.current);
+      openTimerRef.current = null;
+    }
+    if (closeTimerRef.current) {
+      clearTimeout(closeTimerRef.current);
+      closeTimerRef.current = null;
+    }
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      clearTransitionTimers();
+      if (animationTimerRef.current) {
+        clearTimeout(animationTimerRef.current);
+      }
+    };
+  }, [clearTransitionTimers]);
+
   const openCard = useCallback(() => {
     if (state === 'open' || state === 'opening') return;
 
+    clearTransitionTimers();
     setState('opening');
     if (animationType !== 'default') {
-      // Trigger micro-animation once upon opening
       setPlayAnimation(true);
     }
 
-    const timer = setTimeout(() => {
+    openTimerRef.current = setTimeout(() => {
       setState('open');
+      openTimerRef.current = null;
     }, 350);
-
-    return () => clearTimeout(timer);
-  }, [state, animationType]);
+  }, [state, animationType, clearTransitionTimers]);
 
   const closeCard = useCallback(() => {
     if (state === 'closed' || state === 'closing') return;
 
+    clearTransitionTimers();
     setState('closing');
     setPlayAnimation(false);
+    triggerRef.current?.focus();
 
-    const timer = setTimeout(() => {
+    closeTimerRef.current = setTimeout(() => {
       setState('closed');
+      closeTimerRef.current = null;
     }, 350);
+  }, [state, clearTransitionTimers]);
 
-    return () => clearTimeout(timer);
-  }, [state]);
-
-  // Keyboard handler for Escape key when card is open
   useEffect(() => {
     if (!isOpen) return;
 
@@ -98,14 +120,20 @@ export function InteractiveCard({
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [isOpen, closeCard]);
 
-  // Reset animation flag after micro-animation finishes
   useEffect(() => {
-    if (playAnimation) {
-      const timer = setTimeout(() => {
-        setPlayAnimation(false);
-      }, 900);
-      return () => clearTimeout(timer);
-    }
+    if (!playAnimation) return;
+
+    animationTimerRef.current = setTimeout(() => {
+      setPlayAnimation(false);
+      animationTimerRef.current = null;
+    }, 900);
+
+    return () => {
+      if (animationTimerRef.current) {
+        clearTimeout(animationTimerRef.current);
+        animationTimerRef.current = null;
+      }
+    };
   }, [playAnimation]);
 
   const handleTriggerClick = () => {
@@ -113,17 +141,6 @@ export function InteractiveCard({
       closeCard();
     } else {
       openCard();
-    }
-  };
-
-  const handleTriggerKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault();
-      if (isOpen) {
-        closeCard();
-      } else {
-        openCard();
-      }
     }
   };
 
@@ -145,13 +162,12 @@ export function InteractiveCard({
       className={cardClasses}
       aria-labelledby={headerId}
     >
-      {/* Trigger element for card header & preview */}
       <button
+        ref={triggerRef}
         type="button"
         id={headerId}
         className={styles.trigger}
         onClick={handleTriggerClick}
-        onKeyDown={handleTriggerKeyDown}
         aria-expanded={isOpen}
         aria-controls={contentId}
       >
@@ -172,11 +188,9 @@ export function InteractiveCard({
           )}
         </div>
 
-        {/* Closed state preview */}
         {!isOpen && <div className={styles.previewContent}>{preview}</div>}
       </button>
 
-      {/* Close button inside open state */}
       {isOpen && (
         <button
           type="button"
@@ -188,7 +202,6 @@ export function InteractiveCard({
         </button>
       )}
 
-      {/* Expanded container for open state */}
       <div
         id={contentId}
         className={styles.expandedContainer}

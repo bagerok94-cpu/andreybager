@@ -16,13 +16,17 @@ export async function AppShell({ children }: AppShellProps) {
 
   return (
     <div className={styles.shell}>
+      <a href="#main-content" className={styles.skipLink}>
+        Перейти к содержимому
+      </a>
+
       <Header
         navItems={navItems}
         brandTitle={settings.author}
         brandSubtitle={about.role}
       />
 
-      <main id="main-content" className={`${styles.main} container`}>
+      <main id="main-content" className={`${styles.main} container`} tabIndex={-1}>
         {children}
       </main>
 

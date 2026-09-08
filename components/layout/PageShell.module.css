@@ -176,6 +176,11 @@
   color: var(--bg-main);
 }
 
+.cta:focus-visible {
+  outline: 2px solid var(--accent-secondary);
+  outline-offset: 2px;
+}
+
 .secondaryCta {
   display: inline-flex;
   align-items: center;
@@ -197,6 +202,11 @@
   border-color: var(--border-light);
 }
 
+.secondaryCta:focus-visible {
+  outline: 2px solid var(--accent-secondary);
+  outline-offset: 2px;
+}
+
 .back {
   align-self: flex-start;
   margin-top: var(--space-4);
@@ -209,6 +219,12 @@
 
 .back:hover {
   color: var(--text-primary);
+}
+
+.back:focus-visible {
+  outline: 2px solid var(--accent-secondary);
+  outline-offset: 4px;
+  border-radius: var(--radius-sm);
 }
 
 @media (max-width: 767px) {
