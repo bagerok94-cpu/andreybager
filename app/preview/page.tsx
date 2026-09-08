@@ -13,8 +13,8 @@ export const metadata: Metadata = {
   },
 };
 
-export default function PreviewPage() {
-  const state = getDraftState();
+export default async function PreviewPage() {
+  const state = await getDraftState();
 
   return (
     <PageShell

@@ -1,3 +1,5 @@
+import 'server-only';
+
 import type {
   AboutContent,
   ContactContent,
@@ -13,25 +15,15 @@ import type {
   SiteSettings,
   ToolsContent,
 } from '@/types';
-import {
-  aboutContent,
-  contactContent,
-  heroContent,
-  musicContent,
-  navigation,
-  portfolioContent,
-  projectContent,
-  servicesContent,
-  siteSettings,
-  toolsContent,
-} from './data';
-import { portfolioProjects } from './projects';
+import { isDatabaseConfigured } from '@/lib/db';
+import { getPublishedContent as getCmsPublishedContent } from './draft';
+import { createStaticPublishedSnapshot } from './snapshot';
 
 /**
  * Public Content Layer.
  * UI reads published content only through this provider.
  * Draft / preview live in lib/content/draft.ts and must not be imported by public pages.
- * Static today; later this can fetch published rows from PostgreSQL without changing components.
+ * PostgreSQL published rows are used when DATABASE_URL is set; otherwise static fallback.
  */
 
 export interface ContentProvider {
@@ -63,60 +55,76 @@ function sortProjects(projects: PortfolioProject[]): PortfolioProject[] {
   return [...projects].sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
 }
 
+async function getPublishedSnapshot() {
+  if (!isDatabaseConfigured()) {
+    return createStaticPublishedSnapshot();
+  }
+
+  try {
+    return await getCmsPublishedContent();
+  } catch {
+    return createStaticPublishedSnapshot();
+  }
+}
+
 export const contentLayer: ContentProvider = {
   async getSiteSettings() {
-    return siteSettings;
+    return (await getPublishedSnapshot()).settings;
   },
   async getNavigation() {
-    return navigation;
+    return (await getPublishedSnapshot()).navigation;
   },
   async getHero() {
-    return heroContent;
+    return (await getPublishedSnapshot()).hero;
   },
   async getAbout() {
-    return aboutContent;
+    return (await getPublishedSnapshot()).about;
   },
   async getPortfolio() {
-    return portfolioContent;
+    return (await getPublishedSnapshot()).portfolio;
   },
   async getPortfolioProjects() {
-    return sortProjects(portfolioProjects.filter(isPublished));
-  },
-  async getProjectById(id: string) {
-    return (
-      sortProjects(portfolioProjects.filter(isPublished)).find((project) =>
-        matchesProjectId(project, id),
-      ) ?? null
+    return sortProjects(
+      (await getPublishedSnapshot()).projects.filter(isPublished),
     );
   },
+  async getProjectById(id: string) {
+    const projects = sortProjects(
+      (await getPublishedSnapshot()).projects.filter(isPublished),
+    );
+    return projects.find((project) => matchesProjectId(project, id)) ?? null;
+  },
   async getServices() {
-    return servicesContent;
+    return (await getPublishedSnapshot()).services;
   },
   async getTools() {
-    return toolsContent;
+    return (await getPublishedSnapshot()).tools;
   },
   async getContact() {
-    return contactContent;
+    return (await getPublishedSnapshot()).contact;
   },
   async getProject() {
-    return projectContent;
+    return (await getPublishedSnapshot()).project;
   },
   async getMusic() {
-    return musicContent;
+    return (await getPublishedSnapshot()).music;
   },
   async getMusicTracks() {
-    return [];
+    return (await getPublishedSnapshot()).tracks.filter(
+      (track) => track.published !== false,
+    );
   },
-  async getHome() {
+  async getHome(): Promise<HomeContent> {
+    const snapshot = await getPublishedSnapshot();
     return {
-      hero: heroContent,
-      about: aboutContent,
-      portfolio: portfolioContent,
-      services: servicesContent,
-      tools: toolsContent,
-      contact: contactContent,
-      project: projectContent,
-      music: musicContent,
+      hero: snapshot.hero,
+      about: snapshot.about,
+      portfolio: snapshot.portfolio,
+      services: snapshot.services,
+      tools: snapshot.tools,
+      contact: snapshot.contact,
+      project: snapshot.project,
+      music: snapshot.music,
     };
   },
 };

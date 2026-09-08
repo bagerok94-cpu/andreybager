@@ -60,8 +60,16 @@ cp .env.example .env.local
 
 Поля в `.env.example` нужны только для будущих интеграций:
 
-- `DATABASE_URL`
+- `DATABASE_URL` — PostgreSQL. Пока пусто: сайт работает на static content.
 - `TELEGRAM_BOT_TOKEN`
+- `TELEGRAM_OWNER_ID`
+- `CMS_PREVIEW_SECRET`
+
+После появления `DATABASE_URL` на VPS:
+
+```bash
+npm run db:migrate
+```
 
 Не коммитьте реальные `.env` файлы.
 
@@ -76,6 +84,7 @@ npm run dev
 
 ```bash
 npm run lint
+npm test
 npm run build
 ```
 

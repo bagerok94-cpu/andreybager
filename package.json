@@ -6,19 +6,25 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "test": "tsx --test lib/content/logic.test.ts",
+    "db:migrate": "node scripts/migrate.mjs"
   },
   "dependencies": {
     "next": "15.3.9",
+    "pg": "^8.23.0",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "server-only": "^0.0.1"
   },
   "devDependencies": {
     "@types/node": "^22",
+    "@types/pg": "^8.23.1",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^8.57.0",
     "eslint-config-next": "15.3.9",
+    "tsx": "^4.23.13",
     "typescript": "^5"
   }
 }

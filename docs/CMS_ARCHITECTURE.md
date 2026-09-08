@@ -1,88 +1,122 @@
 # CMS Architecture
 
-Фундамент управления контентом ANDREY BAGER.  
-Telegram-бот и PostgreSQL подключаются позже. Публичный UI не меняется.
+Управление контентом ANDREY BAGER.  
+Telegram-бот подключается позже. Публичный UI не меняется.
 
 ## Слои
 
 ```text
 Telegram bot (future)
   → CMS API contracts (lib/api/cms.ts)
-    → Draft / Publish domain (lib/content/draft.ts, publish.ts)
-      → PostgreSQL (future)
+    → draft / publish (lib/content/draft.ts, publish.ts)
+      → CMS repository (lib/content/repository.ts)
+        → PostgreSQL (lib/db)
 
 Public UI
   → contentLayer (lib/content/index.ts)
-    → только published
+    → published snapshot
+      → PostgreSQL если есть DATABASE_URL
+      → иначе static lib/content/data.ts
 ```
 
-Public UI никогда не читает draft.
+Public UI никогда не читает draft и не ходит в SQL напрямую.
 
-## Источники контента
+## PostgreSQL schema
 
-| Режим | Источник | Кто читает |
-|---|---|---|
-| Published | `lib/content/data.ts` + `projects.ts` через `contentLayer` | сайт |
-| Draft | in-memory adapter в `lib/content/draft.ts` | CMS / `/preview` |
-| Preview | `getDraftContent()` | `/preview`, `noindex` |
+Таблица `content_revisions` — `db/migrations/001_cms_content.sql`
 
-In-memory draft не переживает рестарт процесса. После PostgreSQL snapshot будет в БД.
+| Колонка | Назначение |
+|---|---|
+| `id` | unique revision id |
+| `section` | hero, about, portfolio, services, tools, contacts, music, settings |
+| `status` | `draft` \| `published` |
+| `version` | монотонный номер |
+| `payload` | JSONB секции |
+| `created_at` / `updated_at` | timestamps |
 
-## Модель публикации: Publish All
+Unique `(section, status)`: одна текущая draft и одна published запись на раздел.
+
+Миграция на VPS:
+
+```bash
+npm run db:migrate
+# или: psql "$DATABASE_URL" -f db/migrations/001_cms_content.sql
+```
+
+ORM не используется — только `pg` + SQL.
+
+## Repository
+
+`lib/content/repository.ts` — единственный слой SQL.
+
+Операции:
+
+- `getPublishedContent()`
+- `getDraftContent()`
+- `getDraftSection(section)`
+- `saveDraftSection(section, payload)`
+- `hasDraftChanges()`
+- `publishAll({ confirmed })`
+- `discardDraft({ confirmed })`
+
+Telegram-бот на следующем этапе должен вызывать этот слой, не SQL.
+
+## Publish All (транзакция)
 
 ```text
 EDIT → SAVE DRAFT → PREVIEW → CONFIRM → PUBLISH ALL → public updated
 DRAFT → DISCARD (confirm) → published version
 ```
 
-Несколько разделов копятся в одном draft. Публикация — одна операция `publishAll({ confirmed: true })`.
+`publishAll` в одной PostgreSQL-транзакции:
 
-Опасные действия (`publish`, `discard`, `delete`, `mass-change`) требуют `confirmed: true`.
+1. `SELECT … WHERE status = 'draft' FOR UPDATE`
+2. upsert каждой секции в `status = 'published'`
+3. `DELETE` всех draft
+4. `COMMIT`
 
-## Секции Telegram-меню
+Ошибка → `ROLLBACK`. Частичной публикации нет.
 
-`hero` `about` `portfolio` `services` `tools` `contacts` `music` `settings`
+Без `confirmed: true` операция не выполняется.
 
-Список: `CMS_SECTIONS` в `types/cms.ts`.
+## Fallback без DATABASE_URL
+
+- Public UI берёт static published (`data.ts` / `projects.ts`)
+- CMS-операции идут в in-memory store (не переживает рестарт)
+- `npm run build` / CI не подключаются к Postgres
+- Пустая таблица после миграции тоже даёт static fallback, пока не будет Publish All
+
+## Server-only
+
+`import 'server-only'` в:
+
+- `lib/env.ts`
+- `lib/db/index.ts`
+- `lib/content/repository.ts`
+- `lib/content/draft.ts`
+- `lib/content/publish.ts`
+- `lib/content/index.ts`
+
+`DATABASE_URL` не попадает в client bundle. Секреты только в env, не в git.
 
 ## Preview
 
-- Маршрут `/preview` не в навигации и не в sitemap
-- `robots: noindex`
-- Не подменяет production-контент
-- Полноценный preview сайта появится вместе с авторизацией владельца
-
-## Будущий PostgreSQL
-
-Одна таблица ревизий / snapshots:
-
-- `status`: `draft` | `published`
-- `version`
-- `payload` jsonb (`SiteContentSnapshot`)
-- `changed_sections`
-- timestamps
-
-`contentLayer` начнёт читать `status = published`.  
-CMS API будет писать `status = draft`, затем `publishAll` атомарно меняет published.
-
-## Будущий Telegram-бот
-
-1. Только владелец (`TELEGRAM_OWNER_ID`).
-2. Меню по `CMS_SECTIONS`.
-3. Сохранение всегда в draft.
-4. Preview-ссылка на `/preview`.
-5. Publish All и delete — только после подтверждения в чате.
-
-## Медиа
-
-`CmsMediaAsset.source`: `telegram` | `url`.  
-Портфолио: cover + gallery. Музыка: `audioUrl` (mp3) + cover.  
-Файлы пока не загружаются.
+`/preview` — `noindex`, не в nav/sitemap.  
+Repository уже отдаёт draft; полноценный авторизованный preview сайта — следующий этап.
 
 ## Безопасность
 
 - Public UI = published only
-- `/preview` не индексируется
 - Нет публичных CMS mutation endpoints
-- Секреты только в env: `DATABASE_URL`, `TELEGRAM_BOT_TOKEN`, `TELEGRAM_OWNER_ID`, `CMS_PREVIEW_SECRET`
-- Подтверждение опасных операций обязательно
+- Опасные операции только с confirmation
+- `.env` / `.env.local` в `.gitignore`
+
+## Тесты
+
+Чистая логика без Postgres:
+
+```bash
+npm test
+```
+
+Проверяет confirmation, hasDraftChanges и то, что draft одной секции не портит published другой.

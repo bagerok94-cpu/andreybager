@@ -1,47 +1,74 @@
-/**
- * PostgreSQL Data Layer Abstraction.
- *
- * Architecture principle:
- * UI -> Content/Data Layer -> API/Service -> PostgreSQL
- * React components must NEVER interact directly with the database.
- */
+import 'server-only';
 
-export interface DatabaseConfig {
-  connectionString?: string;
-  maxConnections?: number;
-  ssl?: boolean;
-}
+import { Pool, type PoolClient, type QueryResultRow } from 'pg';
+import { serverEnv } from '@/lib/env';
 
 export interface QueryResult<T> {
   rows: T[];
   rowCount: number;
 }
 
-export interface DatabaseClient {
-  query<T = unknown>(sql: string, params?: unknown[]): Promise<QueryResult<T>>;
-  healthCheck(): Promise<boolean>;
+let pool: Pool | null = null;
+
+export function isDatabaseConfigured(): boolean {
+  return Boolean(serverEnv.DATABASE_URL);
 }
 
-/**
- * Placeholder client for future PostgreSQL integration.
- * Will be backed by pg pool / ORM driver when real DB is connected.
- */
-class PostgresDataLayer implements DatabaseClient {
-  private isConfigured(): boolean {
-    return Boolean(process.env.DATABASE_URL);
+export function getPool(): Pool {
+  if (!serverEnv.DATABASE_URL) {
+    throw new Error('[DB] DATABASE_URL is not set');
   }
 
-  async query<T = unknown>(_sql: string, _params?: unknown[]): Promise<QueryResult<T>> {
-    if (!this.isConfigured()) {
-      throw new Error('[DB] Database is not configured yet. Set DATABASE_URL in .env');
-    }
-    // Future database driver query invocation
-    return { rows: [], rowCount: 0 };
+  if (!pool) {
+    pool = new Pool({
+      connectionString: serverEnv.DATABASE_URL,
+      max: 5,
+      connectionTimeoutMillis: 2000,
+      idleTimeoutMillis: 10000,
+    });
   }
 
-  async healthCheck(): Promise<boolean> {
-    return this.isConfigured();
+  return pool;
+}
+
+export async function query<T extends QueryResultRow = QueryResultRow>(
+  sql: string,
+  params: unknown[] = [],
+): Promise<QueryResult<T>> {
+  const result = await getPool().query<T>(sql, params);
+  return {
+    rows: result.rows,
+    rowCount: result.rowCount ?? 0,
+  };
+}
+
+export async function withTransaction<T>(
+  fn: (client: PoolClient) => Promise<T>,
+): Promise<T> {
+  const client = await getPool().connect();
+
+  try {
+    await client.query('BEGIN');
+    const result = await fn(client);
+    await client.query('COMMIT');
+    return result;
+  } catch (error) {
+    await client.query('ROLLBACK');
+    throw error;
+  } finally {
+    client.release();
   }
 }
 
-export const db: DatabaseClient = new PostgresDataLayer();
+export async function healthCheck(): Promise<boolean> {
+  if (!isDatabaseConfigured()) {
+    return false;
+  }
+
+  try {
+    await query('SELECT 1');
+    return true;
+  } catch {
+    return false;
+  }
+}

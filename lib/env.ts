@@ -3,6 +3,8 @@
  * Ensures critical environment variables are accessed strictly on the server.
  */
 
+import 'server-only';
+
 interface ServerEnv {
   DATABASE_URL?: string;
   TELEGRAM_BOT_TOKEN?: string;
