@@ -49,6 +49,7 @@ export function MusicCard({ content, tracks }: MusicCardProps) {
       )}
 
       <div className={styles.openFooter}>
+        <span className={styles.badge}>{content.status}</span>
         <Link
           href={content.ctaHref}
           className={styles.ctaLink}

@@ -16,6 +16,7 @@ export const siteSettings: SiteSettings = {
   description: 'Digital solutions, web design, AI and automation.',
   author: 'ANDREY BAGER',
   defaultLocale: 'ru',
+  siteUrl: 'https://andreybager.ru',
 };
 
 export const navigation: readonly NavItem[] = [
@@ -180,6 +181,7 @@ export const projectContent: ProjectContent = {
 export const musicContent: MusicContent = {
   title: 'МОЯ МУЗЫКА',
   previewDesc: 'Мои треки и музыка.',
+  status: 'В разработке',
   ctaLabel: 'СЛУШАТЬ МУЗЫКУ ↗',
   ctaHref: '/music',
 };

@@ -3,6 +3,7 @@ export interface SiteSettings {
   description: string;
   author: string;
   defaultLocale: string;
+  siteUrl: string;
 }
 
 export interface NavItem {
@@ -144,6 +145,7 @@ export interface MusicTrack {
 export interface MusicContent {
   title: string;
   previewDesc: string;
+  status: string;
   ctaLabel: string;
   ctaHref: string;
 }

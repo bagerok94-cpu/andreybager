@@ -2,82 +2,84 @@
 
 Персональный веб-сайт и портфолио Андрея Багера.
 
+Домен: [andreybager.ru](https://andreybager.ru)
+
 ## Стек технологий
 
 - **Фреймворк**: Next.js 15 (App Router)
 - **Язык**: TypeScript
 - **Рендеринг**: React 19
 - **Линтинг**: ESLint (`next/core-web-vitals`)
-- **База данных (архитектурно)**: PostgreSQL
 - **Стилизация**: CSS Modules / Vanilla CSS (без Tailwind CSS)
 
-## Архитектура
+PostgreSQL, CMS и Telegram заложены в архитектуре, но пока не подключены.
 
-Проект построен на четком разделении слоев ответственности:
+## Архитектура
 
 ```text
 UI (React Components)
   ↓
 Content Layer (lib/content)
   ↓
-API / Services (lib/api)
+API / Services (lib/api)      ← заглушка
   ↓
-Data Layer (lib/db) → PostgreSQL
+Data Layer (lib/db) → PostgreSQL   ← заглушка
 ```
 
 - React-компоненты **никогда** не обращаются напрямую к базе данных.
-- Контент отделен от визуального представления через типизированные интерфейсы в `types/` и `lib/content/`.
-- Переменные окружения безопасно валидируются и считываются на сервере через `lib/env.ts`.
+- Контент отделён от визуального представления через `lib/content` и `types/`.
+- Сейчас контент статический. Позже `ContentProvider` сможет читать PostgreSQL без смены UI.
 
 ## Структура проекта
 
 ```text
-app/                 # Next.js App Router страницы и макеты
-components/          # Изолированные UI и доменные компоненты
+app/                 # Next.js App Router
+components/
   layout/
-  ui/
   cards/
   navigation/
-  music/
-lib/                 # Бизнес-логика, утилиты и интеграции
-  api/               # API контракты и хелперы
-  content/           # Слой поставщиков контента
-  db/                # Слой доступа к данным (PostgreSQL)
-  env.ts             # Серверное чтение переменных окружения
-public/              # Статические ассеты
-types/               # Общие TypeScript интерфейсы и типы
-.agents/             # Архитектурные правила и инструкции для субагентов
+  portfolio/
+  hero/
+lib/
+  content/           # слой контента (источник для UI)
+  api/               # будущие API-контракты
+  db/                # будущий PostgreSQL
+  env.ts             # серверные переменные окружения
+public/
+types/
 ```
 
-## Переменные окружения (.env)
+## Переменные окружения
 
-Скопируйте пример окружения:
+Для локального запуска сайт **не требует** секретов.
+
 ```bash
 cp .env.example .env.local
 ```
 
-Необходимые переменные:
-- `DATABASE_URL`: Строка подключения к PostgreSQL
-- `TELEGRAM_BOT_TOKEN`: Токен Telegram-бота для уведомлений/интеграций
+Поля в `.env.example` нужны только для будущих интеграций:
+
+- `DATABASE_URL`
+- `TELEGRAM_BOT_TOKEN`
+
+Не коммитьте реальные `.env` файлы.
 
 ## Установка и запуск
 
-1. Установка зависимостей:
 ```bash
 npm install
-```
-
-2. Запуск в режиме разработки:
-```bash
 npm run dev
 ```
 
-3. Проверка типов и сборка:
+Проверки:
+
 ```bash
+npm run lint
 npm run build
 ```
 
-4. Запуск продакшн-сервера:
+Продакшн-сервер после сборки:
+
 ```bash
 npm run start
 ```

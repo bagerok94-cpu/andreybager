@@ -116,6 +116,7 @@ body {
   font-weight: 400;
   line-height: 1.6;
   min-height: 100vh;
+  min-height: 100dvh;
   overflow-x: hidden;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -218,6 +219,10 @@ h1, h2, h3, h4, h5, h6 {
   .container {
     padding-left: var(--container-padding-mobile);
     padding-right: var(--container-padding-mobile);
+  }
+
+  body {
+    background-attachment: scroll;
   }
 }
 

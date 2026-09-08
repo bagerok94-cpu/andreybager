@@ -32,3 +32,8 @@ yarn-error.log*
 
 # typescript build info
 *.tsbuildinfo
+
+# misc
+coverage/
+.turbo/
+*.orig

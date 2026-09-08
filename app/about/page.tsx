@@ -6,7 +6,7 @@ import { contentLayer } from '@/lib/content';
 export async function generateMetadata(): Promise<Metadata> {
   const about = await contentLayer.getAbout();
   return {
-    title: `${about.name} — ${about.role}`,
+    title: about.title,
     description: about.openLead,
   };
 }
