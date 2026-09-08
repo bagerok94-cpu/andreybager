@@ -25,6 +25,7 @@ import {
   siteSettings,
   toolsContent,
 } from './data';
+import { portfolioProjects } from './projects';
 
 /**
  * Content Layer Abstraction.
@@ -49,6 +50,18 @@ export interface ContentProvider {
   getHome(): Promise<HomeContent>;
 }
 
+function isPublished(project: PortfolioProject): boolean {
+  return project.published !== false;
+}
+
+function matchesProjectId(project: PortfolioProject, id: string): boolean {
+  return project.id === id || project.slug === id;
+}
+
+function sortProjects(projects: PortfolioProject[]): PortfolioProject[] {
+  return [...projects].sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
+}
+
 export const contentLayer: ContentProvider = {
   async getSiteSettings() {
     return siteSettings;
@@ -66,10 +79,14 @@ export const contentLayer: ContentProvider = {
     return portfolioContent;
   },
   async getPortfolioProjects() {
-    return [];
+    return sortProjects(portfolioProjects.filter(isPublished));
   },
-  async getProjectById(_id: string) {
-    return null;
+  async getProjectById(id: string) {
+    return (
+      sortProjects(portfolioProjects.filter(isPublished)).find((project) =>
+        matchesProjectId(project, id),
+      ) ?? null
+    );
   },
   async getServices() {
     return servicesContent;

@@ -45,6 +45,17 @@ export interface PortfolioProject {
   title: string;
   description: string;
   status: string;
+  slug?: string;
+  category?: string;
+  coverImage?: string;
+  gallery?: string[];
+  url?: string;
+  year?: number;
+  order?: number;
+  published?: boolean;
+  body?: string;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export interface PortfolioContent {

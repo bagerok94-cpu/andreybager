@@ -10,6 +10,10 @@ interface PortfolioCardProps {
   projects: PortfolioProject[];
 }
 
+function projectHref(project: PortfolioProject): string {
+  return `/portfolio/${project.slug ?? project.id}`;
+}
+
 export function PortfolioCard({ content, projects }: PortfolioCardProps) {
   const icon = (
     <svg className={styles.iconSvg} viewBox="0 0 24 24" aria-hidden="true">
@@ -44,7 +48,13 @@ export function PortfolioCard({ content, projects }: PortfolioCardProps) {
           {projects.map((item) => (
             <div key={item.id} className={styles.itemRow}>
               <div className={styles.itemHeader}>
-                <span className={styles.itemTitle}>{item.title}</span>
+                <Link
+                  href={projectHref(item)}
+                  className={styles.itemTitle}
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  {item.title}
+                </Link>
                 <span className={styles.itemStatus}>{item.status}</span>
               </div>
               <p className={styles.itemDesc}>{item.description}</p>

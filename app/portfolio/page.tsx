@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { PageShell } from '@/components/layout';
 import pageStyles from '@/components/layout/PageShell.module.css';
+import { PortfolioList } from '@/components/portfolio/PortfolioList';
 import { contentLayer } from '@/lib/content';
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -23,22 +24,11 @@ export default async function PortfolioPage() {
       title={portfolio.title}
       lead={portfolio.openLead}
     >
-      {projects.length > 0 ? (
-        <div className={pageStyles.list}>
-          {projects.map((item) => (
-            <div key={item.id} className={pageStyles.item}>
-              <span className={pageStyles.itemTitle}>{item.title}</span>
-              <span className={pageStyles.itemLabel}>{item.status}</span>
-              <p className={pageStyles.itemText}>{item.description}</p>
-            </div>
-          ))}
-        </div>
-      ) : (
-        <div className={pageStyles.empty}>
-          <span className={pageStyles.emptyStatus}>{portfolio.status}</span>
-          <p className={pageStyles.emptyText}>{portfolio.openLead}</p>
-        </div>
-      )}
+      <PortfolioList
+        projects={projects}
+        emptyStatus={portfolio.status}
+        emptyText={portfolio.openLead}
+      />
       <span className={pageStyles.badge}>{portfolio.footerBadge}</span>
     </PageShell>
   );
